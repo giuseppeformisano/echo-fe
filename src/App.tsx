@@ -11,58 +11,38 @@ interface MatchData {
 
 type AppStatus = 'idle' | 'searching' | 'chatting';
 
-const SOCKET_URL = 'https://192.168.1.54:4000';
+// Se sei su Vercel, userà l'URL di Render. In locale, userà localhost.
+const SOCKET_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:4000';
 
 function App() {
   const [status, setStatus] = useState<AppStatus>('idle');
   const [roomUrl, setRoomUrl] = useState<string | null>(null);
-  const [logs, setLogs] = useState<string[]>([]);
   const { errors, removeError } = useErrorHandler();
 
   const socketRef = useRef<Socket | null>(null);
   const videoContainerRef = useRef<HTMLDivElement>(null);
   const callFrameRef = useRef<DailyCall | null>(null);
 
-  const addLog = (message: string) => {
-    const timestamp = new Date().toLocaleTimeString();
-    setLogs((prev) => [...prev, `[${timestamp}] ${message}`]);
-  };
-
   useEffect(() => {
+    // In produzione (Render), Socket.io ha bisogno di HTTPS/WSS
     socketRef.current = io(SOCKET_URL, {
-      reconnection: false, // Disabilita i tentativi automatici dopo il primo fallimento
-      timeout: 5000,       // Se il server non risponde entro 5 secondi, considera il tentativo fallito
-    }); 
-
-    addLog('Socket inizializzato');
+      reconnection: true, 
+      reconnectionAttempts: 5,
+      timeout: 10000,
+      transports: ['websocket'], // Forza websocket per evitare problemi di CORS/Polling
+    });
 
     socketRef.current.on('queue:searching', () => {
-      addLog('Status: Searching');
       setStatus('searching');
     });
 
     socketRef.current.on('match:found', (data: MatchData) => {
-      addLog(`Match found! URL: ${data.url}`);
       setRoomUrl(data.url);
       setStatus('chatting');
     });
 
-    socketRef.current.on('error', (errorData: any) => {
-      const msg = errorData?.message || 'Errore di connessione';
-      addLog(`❌ Socket error: ${msg}`);
-      console.error('Socket error:', msg);
-    });
-
-    socketRef.current.on('connect_error', (err: any) => {
-      addLog(`❌ Connect error: ${err.message}`);
-      console.error('Impossibile connettersi al server. Riprova.');
-    });
-
-    socketRef.current.on('disconnect', (reason: string) => {
-      addLog(`❌ Disconnected: ${reason}`);
-      if (reason === 'io server disconnect') {
-        console.error('Disconnesso dal server.');
-      }
+    socketRef.current.on('connect_error', (err) => {
+      console.error('❌ Errore connessione server:', err.message);
     });
 
     return () => {
@@ -75,19 +55,19 @@ function App() {
       try {
         callFrameRef.current = DailyIframe.createFrame(videoContainerRef.current, {
           showLeaveButton: true,
-          iframeStyle: { width: '100%', height: '100%', border: '0' }
+          iframeStyle: { width: '100%', height: '100%', border: '0', borderRadius: '12px' }
         });
         
         callFrameRef.current.join({ url: roomUrl });
         
         callFrameRef.current.on('left-meeting', () => {
-          console.warn(`👋 Left meeting`);
           callFrameRef.current?.destroy();
           callFrameRef.current = null;
+          setRoomUrl(null);
           setStatus('idle');
         });
       } catch (err) {
-        console.error(`❌ Errore creazione iframe:`, err);
+        console.error(`❌ Errore Daily:`, err);
       }
     }
   }, [status, roomUrl]);
