@@ -19,7 +19,10 @@ function App() {
   if (!isAuthenticated) return <LoginPage onLogin={() => setIsAuthenticated(true)} />;
 
   if (status === 'chatting') {
-    return <ChattingView roomUrl={roomUrl!} onLeave={() => setStatus('idle')} />;
+    return <ChattingView roomUrl={roomUrl!} onLeave={() => {
+      leaveQueue(); // Notifica al server che l'utente sta lasciando il contesto (coda o stanza)
+      setStatus('idle');
+    }} />;
   }
 
   return (
