@@ -1,109 +1,36 @@
-import { useState, useEffect, useRef } from 'react';
-import io, { Socket } from 'socket.io-client';
-import DailyIframe, { type DailyCall } from '@daily-co/daily-js';
-import { useErrorHandler } from './hooks/useErrorHandler';
-import { ErrorBanner } from './components/ErrorBanner';
+import { useState } from 'react';
+import ProfileDashboard from './components/ProfileDashboard';
+import LoginPage from './components/LoginPage';
+import SearchingOverlay from './components/SearchingOverlay';
+import ChattingView from './components/ChattingView';
 import './App.css';
-
-interface MatchData {
-  url: string;
-}
-
-type AppStatus = 'idle' | 'searching' | 'chatting';
+import { useSocket } from './hooks/useSocket';
 
 // Se sei su Vercel, userà l'URL di Render. In locale, userà localhost.
-const SOCKET_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:4000';
+// const SOCKET_URL = import.meta.env.VITE_BACKEND_URL;
+const SOCKET_URL = 'https://192.168.1.54:4000';
 
 function App() {
-  const [status, setStatus] = useState<AppStatus>('idle');
-  const [roomUrl, setRoomUrl] = useState<string | null>(null);
-  const { errors, removeError } = useErrorHandler();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { status, roomUrl, joinQueue, leaveQueue, setStatus } = 
+    useSocket(SOCKET_URL, isAuthenticated);
 
-  const socketRef = useRef<Socket | null>(null);
-  const videoContainerRef = useRef<HTMLDivElement>(null);
-  const callFrameRef = useRef<DailyCall | null>(null);
+  // Render condizionale pulito
+  if (!isAuthenticated) return <LoginPage onLogin={() => setIsAuthenticated(true)} />;
 
-  useEffect(() => {
-    // In produzione (Render), Socket.io ha bisogno di HTTPS/WSS
-    socketRef.current = io(SOCKET_URL, {
-      reconnection: true, 
-      reconnectionAttempts: 5,
-      timeout: 10000,
-      transports: ['websocket'], // Forza websocket per evitare problemi di CORS/Polling
-    });
-
-    socketRef.current.on('queue:searching', () => {
-      setStatus('searching');
-    });
-
-    socketRef.current.on('match:found', (data: MatchData) => {
-      setRoomUrl(data.url);
-      setStatus('chatting');
-    });
-
-    socketRef.current.on('connect_error', (err) => {
-      console.error('❌ Errore connessione server:', err.message);
-    });
-
-    return () => {
-      socketRef.current?.disconnect();
-    };
-  }, []);
-
-  useEffect(() => {
-    if (status === 'chatting' && roomUrl && videoContainerRef.current && !callFrameRef.current) {      
-      try {
-        callFrameRef.current = DailyIframe.createFrame(videoContainerRef.current, {
-          showLeaveButton: true,
-          iframeStyle: { width: '100%', height: '100%', border: '0', borderRadius: '12px' }
-        });
-        
-        callFrameRef.current.join({ url: roomUrl });
-        
-        callFrameRef.current.on('left-meeting', () => {
-          callFrameRef.current?.destroy();
-          callFrameRef.current = null;
-          setRoomUrl(null);
-          setStatus('idle');
-        });
-      } catch (err) {
-        console.error(`❌ Errore Daily:`, err);
-      }
-    }
-  }, [status, roomUrl]);
+  if (status === 'chatting') {
+    return <ChattingView roomUrl={roomUrl!} onLeave={() => setStatus('idle')} />;
+  }
 
   return (
-    <div className={`app-container ${status === 'chatting' ? 'chatting' : ''}`}>
-      <ErrorBanner errors={errors} onRemoveError={removeError} />
-
-      <header className="header">
-        <h1>Echo 🌿</h1>
-        <p>Uno spazio sicuro per sfogarsi o ascoltare.</p>
-      </header>
-
-      <main className="main-content">
-        {status === 'idle' && (
-          <button onClick={() => socketRef.current?.emit('queue:join')} className="btn-primary">
-            Inizia a parlare
-          </button>
-        )}
-
-        {status === 'searching' && (
-          <div className="loader-container">
-            <div className="spinner"></div>
-            <p>Cercando una persona pronta ad ascoltarti...</p>
-            <button onClick={() => window.location.reload()} className="btn-secondary">
-              Annulla ricerca
-            </button>
-          </div>
-        )}
-
-        {status === 'chatting' && (
-          <div className="video-wrapper">
-            <div ref={videoContainerRef} className="video-container" />
-          </div>
-        )}
-      </main>
+    <div className={`app-container ${status === 'searching' ? 'is-searching' : ''}`}>
+      <ProfileDashboard
+        name="Marco"
+        stats={{ credits: 3, xp: 150, rank: 'Novizio' }}
+        onSfogati={() => joinQueue('venter')}
+      />
+      
+      {status === 'searching' && <SearchingOverlay onCancel={leaveQueue} />}
     </div>
   );
 }

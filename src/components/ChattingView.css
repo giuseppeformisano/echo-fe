@@ -1,0 +1,13 @@
+/* fe/src/components/ChattingView.css */
+
+.video-wrapper {
+  width: 100%;
+  height: 100%;
+  background: #000;
+}
+
+.video-container {
+  width: 100%;
+  height: 100%;
+  border: none;
+}

@@ -1,10 +1,5 @@
-import { useCallback, useEffect, useState } from 'react';
-
-export interface ErrorMessage {
-  id: string;
-  message: string;
-  timestamp: number;
-}
+import { useCallback, useEffect } from 'react';
+import { useToast } from '../contexts/ToastProvider';
 
 function formatErrorMessage(arg: any): string {
   if (typeof arg === 'string') return arg;
@@ -22,29 +17,18 @@ function formatErrorMessage(arg: any): string {
 }
 
 export function useErrorHandler() {
-  const [errors, setErrors] = useState<ErrorMessage[]>([]);
+  const { showToast } = useToast();
 
-  const addError = useCallback((message: string) => {
-    const id = Date.now().toString() + Math.random();
-    const newError: ErrorMessage = {
-      id,
-      message,
-      timestamp: Date.now(),
-    };
-
-    setErrors((prevErrors) => [newError, ...prevErrors]);
-
-    // Auto-remove dopo 8 secondi
-    setTimeout(() => {
-      setErrors((prevErrors) =>
-        prevErrors.filter((error) => error.id !== id)
-      );
-    }, 8000);
-  }, []);
-
-  const removeError = useCallback((id: string) => {
-    setErrors((prevErrors) => prevErrors.filter((error) => error.id !== id));
-  }, []);
+  const addError = useCallback(
+    (message: string) => {
+      showToast({
+        type: 'error',
+        title: 'Error',
+        message,
+      });
+    },
+    [showToast]
+  );
 
   useEffect(() => {
     // Intercetta console.error
@@ -84,6 +68,4 @@ export function useErrorHandler() {
       window.removeEventListener('unhandledrejection', handleRejection);
     };
   }, [addError]);
-
-  return { errors, addError, removeError };
 }
