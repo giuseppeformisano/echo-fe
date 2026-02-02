@@ -2,16 +2,13 @@
 import React from 'react';
 import './Button.css';
 
-interface ButtonProps {
-  onClick: () => void;
-  children: React.ReactNode;
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary';
-  className?: string;
 }
 
-const Button: React.FC<ButtonProps> = ({ onClick, children, variant = 'primary', className = '' }) => {
+const Button: React.FC<ButtonProps> = ({ children, variant = 'primary', className = '', ...props }) => {
   return (
-    <button onClick={onClick} className={`btn btn-${variant} ${className}`}>
+    <button className={`btn btn-${variant} ${className}`} {...props}>
       {children}
     </button>
   );

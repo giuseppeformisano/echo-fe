@@ -4,6 +4,7 @@ import ProfileDashboard from './components/ProfileDashboard';
 import LoginPage from './components/LoginPage';
 import SearchingOverlay from './components/SearchingOverlay';
 import ChattingView from './components/ChattingView';
+import Navbar from './components/Navbar';
 import './App.css';
 import { useSocket } from './hooks/useSocket';
 import { supabase } from './supabaseClient';
@@ -55,6 +56,10 @@ function App() {
   const { status, roomUrl, joinQueue, leaveQueue, setStatus } = 
     useSocket(SOCKET_URL, isAuthenticated);
 
+  const handleLogout = () => {
+    supabase.auth.signOut();
+  };
+
   // Render condizionale pulito
   if (!isAuthenticated) return <LoginPage onLogin={() => supabase.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.origin } })} />;
 
@@ -66,15 +71,14 @@ function App() {
   }
 
   return (
-    <div className={`app-container ${status === 'searching' ? 'is-searching' : ''}`}>
+      <><Navbar onProfileClick={() => { } } onLogout={handleLogout} /><div className={`app-container ${status === 'searching' ? 'is-searching' : ''}`}>
       <ProfileDashboard
         name={userProfile?.username || session?.user?.user_metadata?.first_name || session?.user?.email?.split('@')[0] || 'Utente'}
         stats={{ credits: userProfile?.credits!, xp: userProfile?.xp!, rank: userProfile?.rank! }}
-        onSfogati={() => joinQueue('venter')}
-      />
-      
+        onSfogati={() => joinQueue('venter')} />
+
       {status === 'searching' && <SearchingOverlay onCancel={leaveQueue} />}
-    </div>
+    </div></>
   );
 }
 

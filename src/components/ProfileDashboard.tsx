@@ -32,7 +32,6 @@ const ProfileDashboard: React.FC<ProfileDashboardProps> = ({
   return (
     <div className="pd-container">
       <div className="pd-header">
-        <img src={logo} className="pd-logo" alt="Echo logo" />
         <div className="pd-stats">
           <div className="pd-stat-item pd-rank">
             <span className="pd-stat-icon">🛡️</span>
