@@ -5,7 +5,7 @@
   background: var(--bg-secondary);
   border-radius: var(--radius-xl);
   border: 1px solid var(--border-color);
-  animation: fadeIn var(--transition-fast);
+  animation: slideUpFade var(--transition-fast);
   box-shadow: var(--shadow-lg);
 }
 
@@ -52,9 +52,4 @@
   outline: none;
   border-color: var(--accent-primary);
   box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
 }
