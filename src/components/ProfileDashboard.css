@@ -33,16 +33,6 @@
   animation: slideUpFade 0.3s ease-out backwards;
 }
 
-.pd-rank { animation-delay: 0.05s; }
-.pd-credits { animation-delay: 0.1s; }
-
-.pd-stat-item:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.2);
-  transform: translateY(-4px) scale(1.05);
-  box-shadow: var(--shadow-md);
-}
-
 .pd-label {
   font-size: 0.7rem;
   text-transform: uppercase;
@@ -93,20 +83,20 @@
   position: relative;
   background: var(--bg-secondary);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 3rem 2rem;
+  padding: 2rem;
   border-radius: var(--radius-xl);
   cursor: pointer;
-  transition: var(--transition-elastic);
+  transition: var(--transition-fast);
   text-align: left;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.25rem;
   overflow: hidden;
   animation: slideUpFade 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) 0.25s backwards;
 }
 
 .pd-card:active {
-  transform: translateY(-5px) scale(0.98);
+  transform: translateY(-1px) scale(0.98);
 }
 
 .pd-card::after {
@@ -120,7 +110,7 @@
 
 .pd-card:hover {
   border-color: rgba(16, 185, 129, 0.5);
-  transform: translateY(-10px) scale(1.02);
+  transform: translateY(-2px) scale(1.02);
   box-shadow: 
     0 30px 60px -12px rgba(0, 0, 0, 0.5),
     0 18px 36px -18px rgba(16, 185, 129, 0.3);
@@ -131,10 +121,10 @@
 }
 
 .pd-emoji {
-  font-size: 2.25rem;
+  font-size: 1.75rem;
   background: rgba(255, 255, 255, 0.05);
-  width: 72px;
-  height: 72px;
+  width: 60px;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -149,18 +139,59 @@
 }
 
 .pd-card-title {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 700;
-  z-index: 1;
 }
 
 .pd-card-desc {
   font-size: 1rem;
   color: var(--text-secondary);
   line-height: 1.6;
-  z-index: 1;
 }
 
 .pd-energy {
   filter: drop-shadow(0 0 8px rgba(250, 204, 21, 0.4));
+}
+
+.pd-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  z-index: 1;
+}
+
+@media (max-width: 768px) {
+  .pd-cards {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .pd-card {
+    padding: 1rem 1.25rem;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    border-radius: var(--radius-lg);
+  }
+
+  .pd-emoji {
+    width: 44px;
+    height: 44px;
+    font-size: 1.25rem;
+    border-radius: 12px;
+    flex-shrink: 0;
+  }
+
+  .pd-card-content {
+    gap: 0.15rem;
+  }
+
+  .pd-card-title {
+    font-size: 1.05rem;
+  }
+
+  .pd-card-desc {
+    font-size: 0.8rem;
+    line-height: 1.3;
+  }
 }

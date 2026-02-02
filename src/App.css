@@ -2,7 +2,7 @@
 /* --- DESIGN SYSTEM & RESET --- */
 /* ------------------------------ */
 :root {
-  --bg-primary: #09090b; 
+  --bg-primary: #09090b;
   --bg-secondary: #18181b;
   --accent-primary: #10b981;
   --accent-hover: #059669;
@@ -38,6 +38,7 @@
     opacity: 0;
     transform: translateY(20px) scale(0.98);
   }
+
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
@@ -45,18 +46,36 @@
 }
 
 @keyframes pulseGlow {
-  0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
-  70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+  0% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+  }
+
+  70% {
+    box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
 }
 
 @keyframes buttonClick {
-  0% { transform: scale(1); }
-  50% { transform: scale(0.95); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(0.985);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
   width: 100%;
   overflow-x: hidden;
@@ -75,18 +94,19 @@ html, body, #root {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 1.5rem;
+  padding: 0 1.5rem;
   transition: var(--transition-fast);
 }
 
-.app-container.is-searching > :not(.search-overlay) {
+.app-container.is-searching> :not(.search-overlay) {
   filter: blur(12px);
   transform: scale(0.99);
   transition: var(--transition-fast);
 }
 
 .app-container.is-searching {
-  overflow: hidden; /* Blocca lo scroll quando l'overlay è attivo */
+  overflow: hidden;
+  /* Blocca lo scroll quando l'overlay è attivo */
 }
 
 .toasts-wrapper {
@@ -117,7 +137,7 @@ html, body, #root {
 
 .icon-btn.btn:hover {
   background-color: var(--bg-glass-hover);
-  transform: translateY(-3px) scale(1.1) rotate(5deg);
+  transform: translateY(-2px) scale(1.01);
   border-color: rgba(255, 255, 255, 0.2);
   box-shadow: var(--shadow-md);
 }

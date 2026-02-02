@@ -57,14 +57,18 @@ const ProfileDashboard: React.FC<ProfileDashboardProps> = ({
       <div className="pd-cards">
         <button className="pd-card" onClick={onSfogati}>
           <div className="pd-emoji">🌿</div>
-          <h2 className="pd-card-title">Ho un peso</h2>
-          <p className="pd-card-desc">Sfogati con un ascoltatore. Costa 1 credito.</p>
+          <div className="pd-card-content">
+            <h2 className="pd-card-title">Ho un peso</h2>
+            <p className="pd-card-desc">Sfogati con un ascoltatore. Costa 1 credito.</p>
+          </div>
         </button>
 
         <button className="pd-card" onClick={handleAscoltaClick}>
           <div className="pd-emoji">👂</div>
-          <h2 className="pd-card-title">Voglio ascoltare</h2>
-          <p className="pd-card-desc">Guadagna XP e crediti. Aiuta qualcuno ora.</p>
+          <div className="pd-card-content">
+            <h2 className="pd-card-title">Voglio ascoltare</h2>
+            <p className="pd-card-desc">Guadagna XP e crediti. Aiuta qualcuno ora.</p>
+          </div>
         </button>
       </div>
     </div>
