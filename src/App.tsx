@@ -53,7 +53,7 @@ function App() {
   }, []);
 
   const isAuthenticated = !!session;
-  const { status, roomUrl, joinQueue, leaveQueue, setStatus } = 
+  const { status, roomUrl, joinQueue, leaveQueue, setStatus } =
     useSocket(SOCKET_URL, isAuthenticated);
 
   const handleLogout = () => {
@@ -71,7 +71,7 @@ function App() {
   }
 
   return (
-      <><Navbar onProfileClick={() => { } } onLogout={handleLogout} /><div className={`app-container ${status === 'searching' ? 'is-searching' : ''}`}>
+    <><Navbar onProfileClick={() => { }} onLogout={handleLogout} /><div className={`app-container ${status === 'searching' ? 'is-searching' : ''}`}>
       <ProfileDashboard
         name={userProfile?.username || session?.user?.user_metadata?.first_name || session?.user?.email?.split('@')[0] || 'Utente'}
         stats={{ credits: userProfile?.credits!, xp: userProfile?.xp!, rank: userProfile?.rank! }}

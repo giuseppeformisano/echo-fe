@@ -48,7 +48,7 @@ html, body, #root {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start; /* Align to top */
-  padding: 1rem 1.5rem;
+  padding: 0 1.5rem;
   gap: 1.5rem;
   transition: var(--transition-fast);
 }
