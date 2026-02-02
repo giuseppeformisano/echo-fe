@@ -16,6 +16,7 @@
   display: flex;
   width: 100%;
   gap: 1rem; /* Aumenta lo spazio tra le due pillole */
+  justify-content: space-between;
 }
 
 .pd-stat-item {
