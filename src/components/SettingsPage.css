@@ -3,9 +3,10 @@
   margin: 2rem auto;
   padding: 2rem;
   background: var(--bg-secondary);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-xl);
   border: 1px solid var(--border-color);
   animation: fadeIn var(--transition-fast);
+  box-shadow: var(--shadow-lg);
 }
 
 .settings-header {
@@ -44,6 +45,13 @@
   background: var(--bg-primary);
   color: var(--text-primary);
   font-size: 1rem;
+  transition: var(--transition-fast);
+}
+
+.settings-field input:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
 }
 
 @keyframes fadeIn {
