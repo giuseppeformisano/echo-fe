@@ -6,9 +6,7 @@ import ChattingView from './components/ChattingView';
 import './App.css';
 import { useSocket } from './hooks/useSocket';
 
-// Se sei su Vercel, userà l'URL di Render. In locale, userà localhost.
-const SOCKET_URL = import.meta.env.VITE_BACKEND_URL;
-// const SOCKET_URL = 'https://192.168.1.54:4000';
+const SOCKET_URL = import.meta.env.VITE_BACKEND_URL || 'https://192.168.1.54:4000';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
