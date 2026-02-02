@@ -1,6 +1,5 @@
 import React from 'react';
 import './ProfileDashboard.css';
-import logo from '../assets/echo-logo.svg';
 import { useToast } from '../contexts/ToastProvider';
 
 interface Stats {
