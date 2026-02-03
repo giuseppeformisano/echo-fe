@@ -4,6 +4,7 @@ import { supabase } from '../supabaseClient';
 import { useToast } from '../contexts/ToastProvider';
 import type { UserProfile } from '../useProfile';
 import Button from './Button';
+import ConfirmationModal from './ConfirmationModal';
 
 interface SettingsPageProps {
   profile: UserProfile | null;
@@ -14,6 +15,7 @@ interface SettingsPageProps {
 const SettingsPage: React.FC<SettingsPageProps> = ({ profile, onProfileUpdate, onBack }) => {
   const [username, setUsername] = useState(profile?.username || '');
   const [loading, setLoading] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const { showToast } = useToast();
 
   const handleSave = async () => {
@@ -32,6 +34,33 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ profile, onProfileUpdate, o
     } else {
       onProfileUpdate(data as UserProfile);
       showToast({ title: 'Successo', message: 'Profilo aggiornato correttamente.' });
+    }
+  };
+
+  const handleDeleteAccount = () => {
+    if (!profile) return;
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    setIsDeleteModalOpen(false);
+    setLoading(true);
+    try {
+      // Elimina i dati del profilo dal database
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .delete()
+        .eq('id', profile.id);
+
+      if (profileError) throw profileError;
+
+      // Esegue il logout. 
+      await supabase.auth.signOut();
+      showToast({ type: 'success', title: 'Account eliminato', message: 'Il tuo profilo e i tuoi dati sono stati rimossi.' });
+    } catch (error: any) {
+      showToast({ type: 'error', title: 'Errore', message: error.message || 'Impossibile eliminare l\'account.' });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -68,8 +97,28 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ profile, onProfileUpdate, o
           <Button onClick={handleSave} disabled={loading} className="settings-save-btn">
             {loading ? 'Salvataggio...' : 'Salva Modifiche'}
           </Button>
+
+          <div className="settings-danger-zone">
+            <h2 className="settings-danger-title">Zona Pericolosa</h2>
+            <p className="settings-danger-desc">
+              L'eliminazione dell'account rimuoverà permanentemente tutti i tuoi dati. Questa azione non può essere annullata.
+            </p>
+            <Button variant="danger" onClick={handleDeleteAccount} disabled={loading}>
+              Elimina Account
+            </Button>
+          </div>
         </div>
       </div>
+
+      <ConfirmationModal 
+        isOpen={isDeleteModalOpen}
+        title="Elimina Account"
+        message="Sei sicuro di voler eliminare il tuo account? Questa azione è irreversibile e tutti i tuoi dati (crediti, XP, profilo) verranno persi definitivamente."
+        onConfirm={handleConfirmDelete}
+        onCancel={() => setIsDeleteModalOpen(false)}
+        confirmText="Elimina definitivamente"
+        variant="danger"
+      />
     </div>
   );
 };

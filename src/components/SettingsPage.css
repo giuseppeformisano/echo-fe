@@ -90,3 +90,23 @@
   border-color: var(--accent-primary);
   box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
 }
+
+.settings-danger-zone {
+  margin-top: 2.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.settings-danger-title {
+  color: #ef4444;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.settings-danger-desc {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}

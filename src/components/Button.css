@@ -43,3 +43,15 @@
   border-color: rgba(255, 255, 255, 0.2);
   box-shadow: var(--shadow-md);
 }
+
+.btn-danger {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.btn-danger:hover {
+  background-color: #ef4444;
+  color: #fff;
+  box-shadow: 0 8px 20px -4px rgba(239, 68, 68, 0.4);
+}
