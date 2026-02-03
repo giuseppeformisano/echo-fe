@@ -35,7 +35,7 @@ function App() {
   if (!isAuthenticated) {
     return (
       <LoginPage 
-        onLogin={() => supabase.auth.signInWithOAuth({ 
+        onGoogleLogin={() => supabase.auth.signInWithOAuth({ 
           provider: 'google', 
           options: { redirectTo: window.location.origin } 
         })} 

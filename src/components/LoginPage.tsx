@@ -1,12 +1,50 @@
-import './LoginPage.css';
+import React, { useState } from 'react';
 import logo from '../assets/echo-logo.svg';
 import Button from './Button';
+import { supabase } from '../supabaseClient';
+import { useToast } from '../contexts/ToastProvider';
+import './LoginPage.css';
 
 interface LoginPageProps {
-  onLogin: () => void;
+  onGoogleLogin: () => void;
 }
 
-const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
+const LoginPage: React.FC<LoginPageProps> = ({ onGoogleLogin }) => {
+  const [isRegistering, setIsRegistering] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const { showToast } = useToast();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    if (isRegistering) {
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+      });
+      if (error) {
+        showToast({ type: 'error', title: 'Errore Registrazione', message: error.message });
+      } else {
+        showToast({ type: 'success', title: 'Registrazione', message: 'Controlla la tua email per confermare l\'account!' });
+      }
+    } else {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      if (error) {
+        const message = error.message === 'Invalid login credentials' 
+          ? 'Utente non trovato o password errata.' 
+          : error.message;
+        showToast({ type: 'error', title: 'Errore Login', message });
+      }
+    }
+    setLoading(false);
+  };
+
   return (
     <div className="lp-container">
       <div className="lp-content">
@@ -14,7 +52,36 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
           <img src={logo} className="lp-logo" alt="Echo logo" />
           <p className="lp-subtitle">Uno spazio sicuro per sfogarsi o ascoltare.</p>
         </div>
-        <Button onClick={onLogin} className="lp-google-btn">
+
+        <form className="lp-form" onSubmit={handleSubmit}>
+          <div className="lp-field">
+            <input 
+              type="email" 
+              placeholder="Email" 
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div className="lp-field">
+            <input 
+              type="password" 
+              placeholder="Password" 
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          <Button type="submit" disabled={loading} className="lp-submit-btn">
+            {loading ? 'Caricamento...' : (isRegistering ? 'Registrati' : 'Accedi')}
+          </Button>
+        </form>
+
+        <div className="lp-divider">
+          <span>oppure</span>
+        </div>
+
+        <Button onClick={onGoogleLogin} className="lp-google-btn" variant="secondary">
           <span className="lp-google-icon">
             <svg viewBox="0 0 48 48">
               <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
@@ -26,6 +93,11 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
           </span>
           <span className="lp-btn-text">Continua con Google</span>
         </Button>
+
+        <button className="lp-toggle-mode" onClick={() => setIsRegistering(!isRegistering)}>
+          {isRegistering ? 'Hai già un account? Accedi' : 'Non hai un account? Registrati'}
+        </button>
+
         <p className="lp-footer">Creando un account, accetti i nostri Termini di Servizio.</p>
       </div>
     </div>
@@ -33,4 +105,3 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
 };
 
 export default LoginPage;
-
