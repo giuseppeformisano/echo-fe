@@ -43,6 +43,7 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ profile, onProfileUpdate, o
   };
 
   const handleConfirmDelete = async () => {
+    if (!profile) return;
     setIsDeleteModalOpen(false);
     setLoading(true);
     try {
