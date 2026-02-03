@@ -18,9 +18,9 @@
   box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
 }
 
-.btn:active {
+/* .btn:active {
   animation: buttonClick 0.08s ease-out;
-}
+} */
 
 .btn:hover {
   transform: translateY(-1px);

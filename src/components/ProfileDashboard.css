@@ -95,9 +95,9 @@
   animation: slideUpFade 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) 0.25s backwards;
 }
 
-.pd-card:active {
+/* .pd-card:active {
   transform: translateY(-1px) scale(0.98);
-}
+} */
 
 .pd-card::after {
   content: '';
