@@ -47,13 +47,18 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ profile, onProfileUpdate, o
     setIsDeleteModalOpen(false);
     setLoading(true);
     try {
-      // Elimina i dati del profilo dal database
+      // Elimina prima il profilo per evitare errori di vincolo se non è impostato CASCADE sul DB
       const { error: profileError } = await supabase
         .from('profiles')
         .delete()
         .eq('id', profile.id);
 
       if (profileError) throw profileError;
+
+      // Elimina l'utente tramite RPC (richiede una funzione 'delete_user' su Supabase)
+      const { error } = await supabase.rpc('delete_user');
+
+      if (error) throw error;
 
       // Esegue il logout. 
       await supabase.auth.signOut();

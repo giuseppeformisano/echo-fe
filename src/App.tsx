@@ -5,6 +5,7 @@ import Navbar from './components/Navbar';
 import LoadingScreen from './components/LoadingScreen';
 import DashboardView from './components/DashboardView';
 import SettingsPage from './components/SettingsPage';
+import UsernameSetup from './components/UsernameSetup';
 import './App.css';
 import { useSocket } from './hooks/useSocket';
 import { supabase } from './supabaseClient';
@@ -41,6 +42,14 @@ function App() {
           provider: 'google', 
           options: { redirectTo: window.location.origin } 
         })} 
+      />
+    );
+  }
+
+  if (userProfile && !userProfile.username) {
+    return (
+      <UsernameSetup 
+        onUsernameSet={(username) => setUserProfile({ ...userProfile, username })} 
       />
     );
   }
