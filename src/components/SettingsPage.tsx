@@ -37,25 +37,38 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ profile, onProfileUpdate, o
 
   return (
     <div className="app-container">
-      <div className="settings-card">
-      <header className="settings-header">
-        <Button variant="secondary" onClick={onBack}>← Indietro</Button>
-        <h1>Impostazioni Profilo</h1>
-      </header>
-      <div className="settings-content">
-        <div className="settings-field">
-          <label>Username</label>
-          <input 
-            type="text" 
-            value={username} 
-            onChange={(e) => setUsername(e.target.value)} 
-            placeholder="Inserisci il tuo username"
-          />
-        </div>
-        <Button onClick={handleSave} disabled={loading}>
-          {loading ? 'Salvataggio...' : 'Salva Modifiche'}
-        </Button>
+      <div className="settings-outer-header">
+        <button className="pd-stat-item settings-back-btn" onClick={onBack}>
+          <span className="pd-stat-icon">⬅️</span>
+          <div className="pd-stat-info">
+            <span className="pd-label">Indietro</span>
+            <span className="pd-stat-value">Dashboard</span>
+          </div>
+        </button>
       </div>
+
+      <div className="settings-card">
+        <header className="settings-header">
+          <h1 className="settings-title">Impostazioni Profilo</h1>
+        </header>
+
+        <div className="settings-content">
+          <div className="settings-field">
+            <label htmlFor="username">Username</label>
+            <input 
+              id="username"
+              type="text" 
+              value={username} 
+              onChange={(e) => setUsername(e.target.value)} 
+              placeholder="Inserisci il tuo username"
+            />
+            <p className="settings-help">Questo è il nome che gli altri utenti vedranno durante le conversazioni.</p>
+          </div>
+          
+          <Button onClick={handleSave} disabled={loading} className="settings-save-btn">
+            {loading ? 'Salvataggio...' : 'Salva Modifiche'}
+          </Button>
+        </div>
       </div>
     </div>
   );

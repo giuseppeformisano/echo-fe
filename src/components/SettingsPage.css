@@ -1,18 +1,55 @@
+.settings-outer-header {
+  max-width: 600px;
+  margin: 2rem auto 0;
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.settings-back-btn {
+  position: relative;
+  overflow: hidden;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  text-align: left;
+  transition: var(--transition-fast);
+  animation: slideUpFade 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) 0.25s backwards;
+}
+
+.settings-back-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top left, rgba(16, 185, 129, 0.15), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.settings-back-btn:hover {
+  border-color: rgba(16, 185, 129, 0.5);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 
+    0 30px 60px -12px rgba(0, 0, 0, 0.5),
+    0 18px 36px -18px rgba(16, 185, 129, 0.3);
+}
+
+.settings-back-btn:hover::after {
+  opacity: 1;
+}
+
 .settings-card {
   max-width: 600px;
-  margin: 2rem auto;
+  margin: 1rem auto 2rem;
   padding: 2rem;
   background: var(--bg-secondary);
   border-radius: var(--radius-xl);
   border: 1px solid var(--border-color);
-  animation: slideUpFade var(--transition-fast);
+  animation: slideUpFade 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) 0.35s backwards;
   box-shadow: var(--shadow-lg);
 }
 
 .settings-header {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
   margin-bottom: 2rem;
 }
 
