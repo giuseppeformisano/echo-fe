@@ -44,11 +44,64 @@
   margin-bottom: 2px;
 }
 
+.pd-stat-info {
+  display: flex;
+  flex-direction: column;
+}
+
 .pd-stat-value {
   font-size: 1rem;
   font-weight: 700;
   color: var(--text-primary);
   line-height: 1;
+}
+
+.pd-xp-progress {
+  width: 100%;
+  min-width: 80px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-full);
+  margin-top: 6px;
+  overflow: hidden;
+}
+
+.pd-xp-fill {
+  height: 100%;
+  background: var(--accent-primary);
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.5);
+  border-radius: var(--radius-full);
+  transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Rank Specific Styles */
+.rank-novizio .pd-stat-icon {
+  filter: drop-shadow(0 0 5px rgba(59, 130, 246, 0.5));
+  color: #3b82f6;
+}
+
+.rank-sostenitore .pd-stat-icon,
+.rank-apprendista .pd-stat-icon,
+.rank-esploratore .pd-stat-icon {
+  filter: drop-shadow(0 0 5px var(--accent-primary));
+}
+
+.rank-guida .pd-stat-icon,
+.rank-custode .pd-stat-icon,
+.rank-saggio .pd-stat-icon,
+.rank-maestro .pd-stat-icon,
+.rank-illuminato .pd-stat-icon,
+.rank-trascendente .pd-stat-icon {
+  filter: drop-shadow(0 0 8px #f59e0b);
+}
+
+.rank-saggio, .rank-maestro, .rank-illuminato, .rank-trascendente {
+  border-color: rgba(245, 158, 11, 0.3) !important;
+  background: rgba(245, 158, 11, 0.05) !important;
+}
+
+.rank-saggio .pd-stat-value, .rank-maestro .pd-stat-value, .rank-illuminato .pd-stat-value, .rank-trascendente .pd-stat-value {
+  color: #fbbf24;
 }
 
 .pd-welcome {

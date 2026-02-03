@@ -1,6 +1,7 @@
 import React from 'react';
 import './ProfileDashboard.css';
 import { useToast } from '../contexts/ToastProvider';
+import { getRankData, type Level } from './xpUtils';
 
 interface Stats {
   credits: number;
@@ -11,15 +12,19 @@ interface Stats {
 interface ProfileDashboardProps {
   name?: string;
   stats?: Stats;
+  levels: Level[];
   onSfogati?: () => void;
 }
 
 const ProfileDashboard: React.FC<ProfileDashboardProps> = ({
   name = 'Marco',
   stats = { credits: 3, xp: 150, rank: 'Novizio' },
+  levels,
   onSfogati,
 }) => {
   const { showToast } = useToast();
+  
+  const rankData = getRankData(stats.xp, levels);
 
   const handleAscoltaClick = () => {
     showToast({
@@ -32,11 +37,17 @@ const ProfileDashboard: React.FC<ProfileDashboardProps> = ({
     <div className="pd-container">
       <div className="pd-header">
         <div className="pd-stats">
-          <div className="pd-stat-item pd-rank">
-            <span className="pd-stat-icon">🛡️</span>
+          <div className={`pd-stat-item pd-rank rank-${rankData.rank.toLowerCase()}`}>
+            <span className="pd-stat-icon">{rankData.icon}</span>
             <div className="pd-stat-info">
               <span className="pd-label">Grado</span>
-              <span className="pd-stat-value">{stats.rank}</span>
+              <span className="pd-stat-value">{rankData.rank}</span>
+              <div className="pd-xp-progress" title={`${stats.xp} XP totali - ${rankData.xpToNext} XP al prossimo livello`}>
+                <div 
+                  className="pd-xp-fill" 
+                  style={{ width: `${rankData.progress}%` }}
+                ></div>
+              </div>
             </div>
           </div>
           <div className="pd-stat-item pd-credits">

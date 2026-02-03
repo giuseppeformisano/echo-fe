@@ -10,6 +10,7 @@ import { useSocket } from './hooks/useSocket';
 import { supabase } from './supabaseClient';
 import { useAuth } from './useAuth';
 import { useProfile } from './useProfile';
+import { useLevels } from './components/useLevels';
 
 const SOCKET_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -18,6 +19,7 @@ type View = 'dashboard' | 'settings';
 function App() {
   const { session, isAuthenticated, loading: authLoading } = useAuth();
   const { userProfile, setUserProfile, loading: profileLoading } = useProfile(session);
+  const { levels, loading: levelsLoading } = useLevels(isAuthenticated);
   const [currentView, setCurrentView] = useState<View>('dashboard');
   
   const { status, roomUrl, joinQueue, leaveQueue, setStatus } =
@@ -28,7 +30,7 @@ function App() {
     setCurrentView('dashboard');
   };
 
-  if (authLoading || (isAuthenticated && profileLoading)) {
+  if (authLoading || (isAuthenticated && (profileLoading || levelsLoading))) {
     return <LoadingScreen />;
   }
 
@@ -71,6 +73,7 @@ function App() {
               xp: userProfile?.xp || 0, 
               rank: userProfile?.rank || 'Novizio' 
             }}
+            levels={levels}
             onSfogati={() => joinQueue('venter')}
             status={status}
             leaveQueue={leaveQueue}

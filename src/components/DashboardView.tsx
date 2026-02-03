@@ -1,10 +1,12 @@
 import React from 'react';
 import ProfileDashboard from './ProfileDashboard';
 import SearchingOverlay from './SearchingOverlay';
+import type { Level } from './xpUtils';
 
 interface DashboardViewProps {
   name: string;
   stats: { credits: number; xp: number; rank: string };
+  levels: Level[];
   onSfogati: () => void;
   status: string;
   leaveQueue: () => void;
@@ -13,6 +15,7 @@ interface DashboardViewProps {
 const DashboardView: React.FC<DashboardViewProps> = ({
   name,
   stats,
+  levels,
   onSfogati,
   status,
   leaveQueue,
@@ -22,6 +25,7 @@ const DashboardView: React.FC<DashboardViewProps> = ({
       <ProfileDashboard
         name={name}
         stats={stats}
+        levels={levels}
         onSfogati={onSfogati}
       />
 
