@@ -1,0 +1,26 @@
+.navbar {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem;
+  z-index: 100;
+  pointer-events: none;
+}
+
+.navbar-actions {
+  display: flex;
+  gap: 0.75rem;
+  pointer-events: auto;
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0.75rem;
+  }
+  .navbar-actions {
+    gap: 0.5rem;
+  }
+}
