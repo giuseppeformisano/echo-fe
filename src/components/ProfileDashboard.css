@@ -1,9 +1,9 @@
 .pd-container {
   width: 100%;
-  max-width: 800px;
+  max-width: 700px;
   display: flex;
   flex-direction: column;
-  gap: 3.5rem;
+  gap: 2.5rem;
 }
 
 .pd-header {
@@ -15,15 +15,15 @@
 .pd-stats {
   display: flex;
   width: 100%;
-  gap: 1rem; /* Aumenta lo spazio tra le due pillole */
+  gap: 0.875rem; /* Aumenta lo spazio tra le due pillole */
   justify-content: space-between;
 }
 
 .pd-stat-item {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 1rem 1.5rem;
+  gap: 0.625rem;
+  padding: 0.875rem 1.25rem;
   border-radius: var(--radius-full);
   background: rgba(255, 255, 255, 0.04);
   backdrop-filter: blur(16px);
@@ -34,7 +34,7 @@
 }
 
 .pd-label {
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--text-secondary);
@@ -50,7 +50,7 @@
 }
 
 .pd-stat-value {
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 700;
   color: var(--text-primary);
   line-height: 1;
@@ -58,11 +58,11 @@
 
 .pd-xp-progress {
   width: 100%;
-  min-width: 80px;
-  height: 4px;
+  min-width: 70px;
+  height: 3px;
   background: rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-full);
-  margin-top: 6px;
+  margin-top: 5px;
   overflow: hidden;
 }
 
@@ -115,9 +115,9 @@
 }
 
 .pd-title {
-  font-size: 3.5rem;
+  font-size: 2.75rem;
   font-weight: 800;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.625rem;
   background: linear-gradient(135deg, #fff 30%, #71717a 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -127,16 +127,16 @@
 
 .pd-sub {
   color: var(--text-secondary);
-  font-size: 1.25rem;
-  max-width: 540px;
-  line-height: 1.6;
+  font-size: 1.05rem;
+  max-width: 480px;
+  line-height: 1.5;
   animation: slideUpFade 0.35s ease-out 0.2s backwards;
 }
 
 .pd-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.25rem;
 }
 
 .pd-card {
@@ -144,14 +144,14 @@
   background: rgba(30, 41, 59, 0.4);
   backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 2.5rem;
+  padding: 2rem;
   border-radius: var(--radius-xl);
   cursor: pointer;
   transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   text-align: left;
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1rem;
   overflow: hidden;
   animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s backwards;
 }
@@ -187,14 +187,14 @@
 }
 
 .pd-emoji {
-  font-size: 2rem;
+  font-size: 1.75rem;
   background: rgba(255, 255, 255, 0.06);
-  width: 70px;
-  height: 70px;
+  width: 60px;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 20px;
+  border-radius: 18px;
   transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
   z-index: 1;
 }
@@ -206,14 +206,14 @@
 }
 
 .pd-card-title {
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   font-weight: 700;
 }
 
 .pd-card-desc {
-  font-size: 1rem;
+  font-size: 0.9rem;
   color: var(--text-secondary);
-  line-height: 1.6;
+  line-height: 1.5;
 }
 
 .pd-energy {
@@ -229,15 +229,15 @@
 
 @media (max-width: 768px) {
   .pd-container {
-    gap: 2.5rem;
+    gap: 2rem;
   }
 
   .pd-title {
-    font-size: 2.25rem;
+    font-size: 2rem;
   }
 
   .pd-sub {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 
   .pd-stat-item {
