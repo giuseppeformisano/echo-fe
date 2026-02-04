@@ -1,7 +1,6 @@
-import React from 'react';
-import './ProfileDashboard.css';
-import { useToast } from '../contexts/ToastProvider';
-import { getRankData, type Level } from './xpUtils';
+import React from "react";
+import "./ProfileDashboard.css";
+import { getRankData, type Level } from "./xpUtils";
 
 interface Stats {
   credits: number;
@@ -14,37 +13,35 @@ interface ProfileDashboardProps {
   stats?: Stats;
   levels: Level[];
   onSfogati?: () => void;
+  onAscolta?: () => void;
 }
 
 const ProfileDashboard: React.FC<ProfileDashboardProps> = ({
-  name = 'Marco',
-  stats = { credits: 3, xp: 150, rank: 'Novizio' },
+  name = "Marco",
+  stats = { credits: 3, xp: 150, rank: "Novizio" },
   levels,
   onSfogati,
+  onAscolta,
 }) => {
-  const { showToast } = useToast();
-  
   const rankData = getRankData(stats.xp, levels);
-
-  const handleAscoltaClick = () => {
-    showToast({
-      title: 'Funzione in Arrivo',
-      message: 'La modalità ascoltatore non è ancora disponibile.',
-    });
-  };
 
   return (
     <div className="pd-container">
       <div className="pd-header">
         <div className="pd-stats">
-          <div className={`pd-stat-item pd-rank rank-${rankData.rank.toLowerCase()}`}>
+          <div
+            className={`pd-stat-item pd-rank rank-${rankData.rank.toLowerCase()}`}
+          >
             <span className="pd-stat-icon">{rankData.icon}</span>
             <div className="pd-stat-info">
               <span className="pd-label">Grado</span>
               <span className="pd-stat-value">{rankData.rank}</span>
-              <div className="pd-xp-progress" title={`${stats.xp} XP totali - ${rankData.xpToNext} XP al prossimo livello`}>
-                <div 
-                  className="pd-xp-fill" 
+              <div
+                className="pd-xp-progress"
+                title={`${stats.xp} XP totali - ${rankData.xpToNext} XP al prossimo livello`}
+              >
+                <div
+                  className="pd-xp-fill"
                   style={{ width: `${rankData.progress}%` }}
                 ></div>
               </div>
@@ -70,15 +67,19 @@ const ProfileDashboard: React.FC<ProfileDashboardProps> = ({
           <div className="pd-emoji">🌿</div>
           <div className="pd-card-content">
             <h2 className="pd-card-title">Ho un peso</h2>
-            <p className="pd-card-desc">Sfogati con un ascoltatore. Costa 1 credito.</p>
+            <p className="pd-card-desc">
+              Sfogati con un ascoltatore. Costa 1 credito.
+            </p>
           </div>
         </button>
 
-        <button className="pd-card" onClick={handleAscoltaClick}>
+        <button className="pd-card" onClick={onAscolta}>
           <div className="pd-emoji">👂</div>
           <div className="pd-card-content">
             <h2 className="pd-card-title">Voglio ascoltare</h2>
-            <p className="pd-card-desc">Guadagna XP e crediti. Aiuta qualcuno ora.</p>
+            <p className="pd-card-desc">
+              Guadagna XP e crediti. Aiuta qualcuno ora.
+            </p>
           </div>
         </button>
       </div>

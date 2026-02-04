@@ -12,7 +12,7 @@
   --bg-glass: rgba(24, 24, 27, 0.4);
   --bg-glass-hover: rgba(39, 39, 42, 0.8);
 
-  --font-sans: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+  --font-sans: "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
   --font-size-base: 16px;
   --radius-sm: 0.6rem;
   --radius-md: 1rem;
@@ -79,7 +79,7 @@ body,
   height: 100%;
   width: 100%;
   overflow-x: hidden;
-  background-color: var(--bg-primary);
+  background: linear-gradient(135deg, #0a0e1a 0%, #1a1f2e 100%);
   color: var(--text-primary);
   font-family: var(--font-sans);
   font-size: var(--font-size-base);
@@ -98,7 +98,7 @@ body,
   transition: var(--transition-fast);
 }
 
-.app-container.is-searching> :not(.search-overlay) {
+.app-container.is-searching > :not(.search-overlay) {
   filter: blur(12px);
   transform: scale(0.99);
   transition: var(--transition-fast);

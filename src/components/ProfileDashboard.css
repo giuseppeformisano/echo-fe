@@ -23,14 +23,14 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 1rem 1.25rem;
-  border-radius: var(--radius-full); /* Forma a pillola */
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: var(--transition-elastic);
-  box-shadow: var(--shadow-sm);
-  animation: slideUpFade 0.3s ease-out backwards;
+  padding: 1rem 1.5rem;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  animation: slideUpFade 0.6s ease-out backwards;
 }
 
 .pd-label {
@@ -95,12 +95,18 @@
   filter: drop-shadow(0 0 8px #f59e0b);
 }
 
-.rank-saggio, .rank-maestro, .rank-illuminato, .rank-trascendente {
+.rank-saggio,
+.rank-maestro,
+.rank-illuminato,
+.rank-trascendente {
   border-color: rgba(245, 158, 11, 0.3) !important;
   background: rgba(245, 158, 11, 0.05) !important;
 }
 
-.rank-saggio .pd-stat-value, .rank-maestro .pd-stat-value, .rank-illuminato .pd-stat-value, .rank-trascendente .pd-stat-value {
+.rank-saggio .pd-stat-value,
+.rank-maestro .pd-stat-value,
+.rank-illuminato .pd-stat-value,
+.rank-trascendente .pd-stat-value {
   color: #fbbf24;
 }
 
@@ -135,18 +141,19 @@
 
 .pd-card {
   position: relative;
-  background: var(--bg-secondary);
+  background: rgba(30, 41, 59, 0.4);
+  backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 2rem;
+  padding: 2.5rem;
   border-radius: var(--radius-xl);
   cursor: pointer;
-  transition: var(--transition-fast);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   text-align: left;
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
   overflow: hidden;
-  animation: slideUpFade 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) 0.25s backwards;
+  animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s backwards;
 }
 
 /* .pd-card:active {
@@ -154,20 +161,25 @@
 } */
 
 .pd-card::after {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at top left, rgba(16, 185, 129, 0.15), transparent 70%);
+  background: radial-gradient(
+    circle at top left,
+    rgba(16, 185, 129, 0.15),
+    transparent 70%
+  );
   opacity: 0;
   transition: opacity 0.4s ease;
 }
 
 .pd-card:hover {
-  border-color: rgba(16, 185, 129, 0.5);
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 
-    0 30px 60px -12px rgba(0, 0, 0, 0.5),
-    0 18px 36px -18px rgba(16, 185, 129, 0.3);
+  border-color: rgba(16, 185, 129, 0.4);
+  transform: translateY(-4px) scale(1.01);
+  box-shadow:
+    0 24px 48px rgba(0, 0, 0, 0.4),
+    0 0 60px rgba(16, 185, 129, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .pd-card:hover::after {
@@ -175,21 +187,22 @@
 }
 
 .pd-emoji {
-  font-size: 1.75rem;
-  background: rgba(255, 255, 255, 0.05);
-  width: 60px;
-  height: 60px;
+  font-size: 2rem;
+  background: rgba(255, 255, 255, 0.06);
+  width: 70px;
+  height: 70px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 20px;
-  transition: transform 0.4s ease;
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
   z-index: 1;
 }
 
 .pd-card:hover .pd-emoji {
-  transform: rotate(-10deg) scale(1.1);
-  background: rgba(16, 185, 129, 0.1);
+  transform: rotate(-8deg) scale(1.15);
+  background: rgba(16, 185, 129, 0.15);
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
 }
 
 .pd-card-title {
