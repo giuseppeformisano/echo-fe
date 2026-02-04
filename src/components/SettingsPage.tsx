@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import './SettingsPage.css';
-import { supabase } from '../supabaseClient';
-import { useToast } from '../contexts/ToastProvider';
-import type { UserProfile } from '../useProfile';
-import Button from './Button';
-import ConfirmationModal from './ConfirmationModal';
+import React, { useState } from "react";
+import "./SettingsPage.css";
+import { supabase } from "../supabaseClient";
+import { useToast } from "../contexts/ToastProvider";
+import type { UserProfile } from "../useProfile";
+import Button from "./Button";
+import ConfirmationModal from "./ConfirmationModal";
 
 interface SettingsPageProps {
   profile: UserProfile | null;
@@ -12,8 +12,12 @@ interface SettingsPageProps {
   onBack: () => void;
 }
 
-const SettingsPage: React.FC<SettingsPageProps> = ({ profile, onProfileUpdate, onBack }) => {
-  const [username, setUsername] = useState(profile?.username || '');
+const SettingsPage: React.FC<SettingsPageProps> = ({
+  profile,
+  onProfileUpdate,
+  onBack,
+}) => {
+  const [username, setUsername] = useState(profile?.username || "");
   const [loading, setLoading] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const { showToast } = useToast();
@@ -22,18 +26,24 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ profile, onProfileUpdate, o
     if (!profile) return;
     setLoading(true);
     const { data, error } = await supabase
-      .from('profiles')
+      .from("profiles")
       .update({ username })
-      .eq('id', profile.id)
+      .eq("id", profile.id)
       .select()
       .single();
 
     setLoading(false);
     if (error) {
-      showToast({ title: 'Errore', message: 'Impossibile aggiornare il profilo.' });
+      showToast({
+        title: "Errore",
+        message: "Impossibile aggiornare il profilo.",
+      });
     } else {
       onProfileUpdate(data as UserProfile);
-      showToast({ title: 'Successo', message: 'Profilo aggiornato correttamente.' });
+      showToast({
+        title: "Successo",
+        message: "Profilo aggiornato correttamente.",
+      });
     }
   };
 
@@ -49,22 +59,30 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ profile, onProfileUpdate, o
     try {
       // Elimina prima il profilo per evitare errori di vincolo se non è impostato CASCADE sul DB
       const { error: profileError } = await supabase
-        .from('profiles')
+        .from("profiles")
         .delete()
-        .eq('id', profile.id);
+        .eq("id", profile.id);
 
       if (profileError) throw profileError;
 
       // Elimina l'utente tramite RPC (richiede una funzione 'delete_user' su Supabase)
-      const { error } = await supabase.rpc('delete_user');
+      const { error } = await supabase.rpc("delete_user");
 
       if (error) throw error;
 
-      // Esegue il logout. 
+      // Esegue il logout.
       await supabase.auth.signOut();
-      showToast({ type: 'success', title: 'Account eliminato', message: 'Il tuo profilo e i tuoi dati sono stati rimossi.' });
+      showToast({
+        type: "success",
+        title: "Account eliminato",
+        message: "Il tuo profilo e i tuoi dati sono stati rimossi.",
+      });
     } catch (error: any) {
-      showToast({ type: 'error', title: 'Errore', message: error.message || 'Impossibile eliminare l\'account.' });
+      showToast({
+        type: "error",
+        title: "Errore",
+        message: error.message || "Impossibile eliminare l'account.",
+      });
     } finally {
       setLoading(false);
     }
@@ -84,39 +102,51 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ profile, onProfileUpdate, o
 
       <div className="settings-card">
         <header className="settings-header">
-          <h1 className="settings-title">Impostazioni Profilo</h1>
+          <h1 className="settings-title">Impostazioni Profiloo</h1>
         </header>
 
         <div className="settings-content">
           <div className="settings-field">
             <label htmlFor="username">Username</label>
-            <input 
+            <input
               id="username"
-              type="text" 
-              value={username} 
-              onChange={(e) => setUsername(e.target.value)} 
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               placeholder="Inserisci il tuo username"
             />
-            <p className="settings-help">Questo è il nome che gli altri utenti vedranno durante le conversazioni.</p>
+            <p className="settings-help">
+              Questo è il nome che gli altri utenti vedranno durante le
+              conversazioni.
+            </p>
           </div>
-          
-          <Button onClick={handleSave} disabled={loading} className="settings-save-btn">
-            {loading ? 'Salvataggio...' : 'Salva Modifiche'}
+
+          <Button
+            onClick={handleSave}
+            disabled={loading}
+            className="settings-save-btn"
+          >
+            {loading ? "Salvataggio..." : "Salva Modifiche"}
           </Button>
 
           <div className="settings-danger-zone">
             <h2 className="settings-danger-title">Zona Pericolosa</h2>
             <p className="settings-danger-desc">
-              L'eliminazione dell'account rimuoverà permanentemente tutti i tuoi dati. Questa azione non può essere annullata.
+              L'eliminazione dell'account rimuoverà permanentemente tutti i tuoi
+              dati. Questa azione non può essere annullata.
             </p>
-            <Button variant="danger" onClick={handleDeleteAccount} disabled={loading}>
+            <Button
+              variant="danger"
+              onClick={handleDeleteAccount}
+              disabled={loading}
+            >
               Elimina Account
             </Button>
           </div>
         </div>
       </div>
 
-      <ConfirmationModal 
+      <ConfirmationModal
         isOpen={isDeleteModalOpen}
         title="Elimina Account"
         message="Sei sicuro di voler eliminare il tuo account? Questa azione è irreversibile e tutti i tuoi dati (crediti, XP, profilo) verranno persi definitivamente."

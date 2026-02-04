@@ -1,37 +1,48 @@
 .settings-outer-header {
-  max-width: 600px;
+  max-width: 700px;
   margin: 2rem auto 0;
   display: flex;
   justify-content: flex-start;
   width: 100%;
+  animation: slideUpFade 0.6s ease-out backwards;
 }
 
 .settings-back-btn {
   position: relative;
   overflow: hidden;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   cursor: pointer;
   text-align: left;
-  transition: var(--transition-fast);
-  animation: slideUpFade 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) 0.25s backwards;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
 .settings-back-btn::after {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at top left, rgba(16, 185, 129, 0.15), transparent 70%);
+  background: radial-gradient(
+    circle at top left,
+    rgba(16, 185, 129, 0.15),
+    transparent 70%
+  );
   opacity: 0;
   transition: opacity 0.4s ease;
 }
 
 .settings-back-btn:hover {
-  border-color: rgba(16, 185, 129, 0.5);
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 
-    0 30px 60px -12px rgba(0, 0, 0, 0.5),
-    0 18px 36px -18px rgba(16, 185, 129, 0.3);
+  border-color: rgba(16, 185, 129, 0.4);
+  transform: translateY(-2px) scale(1.01);
+  box-shadow:
+    0 24px 48px rgba(0, 0, 0, 0.4),
+    0 0 60px rgba(16, 185, 129, 0.2);
 }
 
 .settings-back-btn:hover::after {
@@ -39,74 +50,106 @@
 }
 
 .settings-card {
-  max-width: 600px;
-  margin: 1rem auto 2rem;
-  padding: 2rem;
-  background: var(--bg-secondary);
+  max-width: 700px;
+  margin: 1.5rem auto 2rem;
+  padding: 2.5rem;
+  background: rgba(30, 41, 59, 0.4);
+  backdrop-filter: blur(16px);
   border-radius: var(--radius-xl);
-  border: 1px solid var(--border-color);
-  animation: slideUpFade 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) 0.35s backwards;
-  box-shadow: var(--shadow-lg);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.15s backwards;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.settings-card:hover {
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
 
 .settings-header {
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
 }
 
 .settings-header h1 {
-  font-size: 1.5rem;
+  font-size: 2.5rem;
+  font-weight: 800;
   margin: 0;
+  background: linear-gradient(135deg, #fff 30%, #71717a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .settings-content {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 2rem;
 }
 
 .settings-field {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.75rem;
 }
 
 .settings-field label {
-  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   color: var(--text-secondary);
+  font-weight: 700;
 }
 
 .settings-field input {
-  padding: 0.75rem;
+  padding: 1rem 1.25rem;
   border-radius: var(--radius-md);
-  border: 1px solid var(--border-color);
-  background: var(--bg-primary);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(8px);
   color: var(--text-primary);
   font-size: 1rem;
-  transition: var(--transition-fast);
+  font-family: inherit;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .settings-field input:focus {
   outline: none;
   border-color: var(--accent-primary);
-  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.settings-field input::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.5;
+}
+
+.settings-help {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin: 0;
+  opacity: 0.7;
+  line-height: 1.5;
 }
 
 .settings-danger-zone {
-  margin-top: 2.5rem;
-  padding-top: 2rem;
-  border-top: 1px solid var(--border-color);
+  margin-top: 3rem;
+  padding-top: 2.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .settings-danger-title {
   color: #ef4444;
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  text-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
 }
 
 .settings-danger-desc {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   color: var(--text-secondary);
   margin-bottom: 1.5rem;
-  line-height: 1.5;
+  line-height: 1.6;
+  opacity: 0.8;
 }
