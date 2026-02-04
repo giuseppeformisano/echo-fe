@@ -102,7 +102,7 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
 
       <div className="settings-card">
         <header className="settings-header">
-          <h1 className="settings-title">Impostazioni Profiloo</h1>
+          <h1 className="settings-title">Impostazioni Profilo</h1>
         </header>
 
         <div className="settings-content">
