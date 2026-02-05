@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { supabase } from "../supabaseClient";
 import type { Session } from "@supabase/supabase-js";
 
@@ -13,6 +13,7 @@ export interface UserProfile {
 export function useProfile(session: Session | null) {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
+  const fetchedRef = useRef(false);
 
   const fetchProfile = async (userId: string) => {
     setLoading(true);
@@ -29,10 +30,11 @@ export function useProfile(session: Session | null) {
   };
 
   useEffect(() => {
-    if (session?.user.id) {
+    if (session?.user.id && !fetchedRef.current) {
       fetchProfile(session.user.id);
+      fetchedRef.current = true;
     }
-  }, [session]);
+  }, [session?.user.id]);
 
   return { userProfile, setUserProfile, loading };
 }

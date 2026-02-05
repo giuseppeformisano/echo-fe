@@ -57,13 +57,6 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
     setIsDeleteModalOpen(false);
     setLoading(true);
     try {
-      const { error: profileError } = await supabase
-        .from("profiles")
-        .delete()
-        .eq("id", profile.id);
-
-      if (profileError) throw profileError;
-
       const { error } = await supabase.rpc("delete_user");
 
       if (error) throw error;
