@@ -1,7 +1,7 @@
 import React from "react";
 import ProfileDashboard from "./components/ProfileDashboard";
-import SearchingOverlay from "./components/SearchingOverlay";
 import type { Level } from "../../utils/xpUtils";
+import SearchingOverlay from "./components/SearchingOverlay";
 
 interface DashboardViewProps {
   name: string;

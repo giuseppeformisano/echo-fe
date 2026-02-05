@@ -16,23 +16,46 @@ const ChattingView: React.FC<ChattingViewProps> = ({
 }) => {
   const videoContainerRef = useRef<HTMLDivElement>(null);
   const callFrameRef = useRef<DailyCall | null>(null);
+  const onLeaveRef = useRef(onLeave);
+  const socketRef = useRef(socket);
 
   useEffect(() => {
+    onLeaveRef.current = onLeave;
+  }, [onLeave]);
+
+  useEffect(() => {
+    socketRef.current = socket;
+  }, [socket]);
+
+  useEffect(() => {
+    if (!roomUrl) {
+      return;
+    }
+
     if (videoContainerRef.current && !callFrameRef.current) {
       try {
+        while (videoContainerRef.current.firstChild) {
+          videoContainerRef.current.removeChild(
+            videoContainerRef.current.firstChild
+          );
+        }
+
         callFrameRef.current = DailyIframe.createFrame(
           videoContainerRef.current,
           {
             showLeaveButton: true,
             iframeStyle: { width: "100%", height: "100%", border: "0" },
-          },
+            allowMultipleCallInstances: true,
+          }
         );
 
         callFrameRef.current
           .join({ url: roomUrl })
           .then((joinData) => {
-            if (joinData?.room && socket.current) {
-              socket.current.emit("call:joined", { roomId: joinData.room });
+            if (joinData?.room && socketRef.current?.current) {
+              socketRef.current.current.emit("call:joined", {
+                roomId: joinData.room,
+              });
               console.log(`📞 Notificato join alla stanza: ${joinData.room}`);
             }
           })
@@ -41,9 +64,10 @@ const ChattingView: React.FC<ChattingViewProps> = ({
           });
 
         callFrameRef.current.on("left-meeting", () => {
+          callFrameRef.current?.leave();
           callFrameRef.current?.destroy();
           callFrameRef.current = null;
-          onLeave();
+          onLeaveRef.current();
         });
       } catch (err) {
         console.error(`❌ Errore Daily:`, err);
@@ -52,11 +76,12 @@ const ChattingView: React.FC<ChattingViewProps> = ({
 
     return () => {
       if (callFrameRef.current) {
+        callFrameRef.current.leave();
         callFrameRef.current.destroy();
         callFrameRef.current = null;
       }
     };
-  }, [roomUrl, onLeave, socket]);
+  }, [roomUrl]);
 
   return (
     <div className="video-wrapper">
