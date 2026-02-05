@@ -7,6 +7,7 @@ import "./ChattingView.css";
 
 interface ChattingViewProps {
   roomUrl: string;
+  roomId: string;
   onLeave: () => void;
   socket: React.RefObject<Socket | null>;
   role?: "venter" | "listener";
@@ -14,6 +15,7 @@ interface ChattingViewProps {
 
 const ChattingView: React.FC<ChattingViewProps> = ({
   roomUrl,
+  roomId,
   onLeave,
   socket,
   role = "venter",
@@ -57,15 +59,15 @@ const ChattingView: React.FC<ChattingViewProps> = ({
 
         callFrameRef.current
           .join({ url: roomUrl })
-          .then((joinData) => {
-            if (joinData?.room && socketRef.current?.current && userProfile?.id) {
+          .then(() => {
+            if (socketRef.current?.current && userProfile?.id) {
               socketRef.current.current.emit("call:joined", {
-                roomId: joinData.room,
+                roomId: roomId,
                 userId: userProfile.id,
                 role: role,
               });
               console.log(
-                `📞 Notificato join alla stanza: ${joinData.room} (${role})`
+                `📞 Notificato join alla stanza: ${roomId} (${role})`
               );
             }
           })
@@ -91,7 +93,7 @@ const ChattingView: React.FC<ChattingViewProps> = ({
         callFrameRef.current = null;
       }
     };
-  }, [roomUrl, userProfile?.id, role]);
+  }, [roomUrl, roomId, userProfile?.id, role]);
 
   return (
     <div className="video-wrapper">

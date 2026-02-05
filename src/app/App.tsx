@@ -27,7 +27,7 @@ function App() {
   const { levels, loading: levelsLoading } = useLevels(isAuthenticated);
   const [currentView, setCurrentView] = useState<View>("dashboard");
 
-  const { status, roomUrl, joinQueue, leaveQueue, setStatus, socket, currentRole } =
+  const { status, roomUrl, roomId, joinQueue, leaveQueue, setStatus, socket, currentRole } =
     useSocket(SOCKET_URL, isAuthenticated);
 
   const handleLogout = () => {
@@ -66,6 +66,7 @@ function App() {
     return (
       <ChattingView
         roomUrl={roomUrl!}
+        roomId={roomId!}
         socket={socket}
         role={currentRole || "venter"}
         onLeave={() => {
@@ -98,8 +99,8 @@ function App() {
               rank: userProfile?.rank || "Novizio",
             }}
             levels={levels}
-            onSfogati={() => joinQueue("venter")}
-            onAscolta={() => joinQueue("listener")}
+            onSfogati={() => joinQueue("venter", userProfile?.id)}
+            onAscolta={() => joinQueue("listener", userProfile?.id)}
             status={status}
             leaveQueue={leaveQueue}
           />
