@@ -7,6 +7,9 @@ export const useSocket = (url: string, isAuthenticated: boolean) => {
     "idle",
   );
   const [roomUrl, setRoomUrl] = useState<string | null>(null);
+  const [currentRole, setCurrentRole] = useState<"venter" | "listener" | null>(
+    null
+  );
   const socketRef = useRef<Socket | null>(null);
 
   useEffect(() => {
@@ -28,11 +31,13 @@ export const useSocket = (url: string, isAuthenticated: boolean) => {
 
   const joinQueue = (role: "venter" | "listener") => {
     socketRef.current?.emit("queue:join", { role });
+    setCurrentRole(role);
     setStatus("searching");
   };
 
   const leaveQueue = () => {
     socketRef.current?.emit("queue:leave");
+    setCurrentRole(null);
     setStatus("idle");
   };
 
@@ -44,5 +49,6 @@ export const useSocket = (url: string, isAuthenticated: boolean) => {
     setStatus,
     setRoomUrl,
     socket: socketRef,
+    currentRole,
   };
 };

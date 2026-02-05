@@ -1,23 +1,29 @@
 import React, { useEffect, useRef } from "react";
 import DailyIframe, { type DailyCall } from "@daily-co/daily-js";
 import { Socket } from "socket.io-client";
+import { useAuth } from "../../hooks/useAuth";
+import { useProfile } from "../../hooks/useProfile";
 import "./ChattingView.css";
 
 interface ChattingViewProps {
   roomUrl: string;
   onLeave: () => void;
   socket: React.RefObject<Socket | null>;
+  role?: "venter" | "listener";
 }
 
 const ChattingView: React.FC<ChattingViewProps> = ({
   roomUrl,
   onLeave,
   socket,
+  role = "venter",
 }) => {
   const videoContainerRef = useRef<HTMLDivElement>(null);
   const callFrameRef = useRef<DailyCall | null>(null);
   const onLeaveRef = useRef(onLeave);
   const socketRef = useRef(socket);
+  const { session } = useAuth();
+  const { userProfile } = useProfile(session);
 
   useEffect(() => {
     onLeaveRef.current = onLeave;
@@ -52,11 +58,15 @@ const ChattingView: React.FC<ChattingViewProps> = ({
         callFrameRef.current
           .join({ url: roomUrl })
           .then((joinData) => {
-            if (joinData?.room && socketRef.current?.current) {
+            if (joinData?.room && socketRef.current?.current && userProfile?.id) {
               socketRef.current.current.emit("call:joined", {
                 roomId: joinData.room,
+                userId: userProfile.id,
+                role: role,
               });
-              console.log(`📞 Notificato join alla stanza: ${joinData.room}`);
+              console.log(
+                `📞 Notificato join alla stanza: ${joinData.room} (${role})`
+              );
             }
           })
           .catch((err) => {
@@ -81,7 +91,7 @@ const ChattingView: React.FC<ChattingViewProps> = ({
         callFrameRef.current = null;
       }
     };
-  }, [roomUrl]);
+  }, [roomUrl, userProfile?.id, role]);
 
   return (
     <div className="video-wrapper">

@@ -27,7 +27,7 @@ function App() {
   const { levels, loading: levelsLoading } = useLevels(isAuthenticated);
   const [currentView, setCurrentView] = useState<View>("dashboard");
 
-  const { status, roomUrl, joinQueue, leaveQueue, setStatus, socket } =
+  const { status, roomUrl, joinQueue, leaveQueue, setStatus, socket, currentRole } =
     useSocket(SOCKET_URL, isAuthenticated);
 
   const handleLogout = () => {
@@ -67,6 +67,7 @@ function App() {
       <ChattingView
         roomUrl={roomUrl!}
         socket={socket}
+        role={currentRole || "venter"}
         onLeave={() => {
           leaveQueue();
           setStatus("idle");
