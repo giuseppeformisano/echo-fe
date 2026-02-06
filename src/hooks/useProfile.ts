@@ -36,5 +36,11 @@ export function useProfile(session: Session | null) {
     }
   }, [session?.user.id]);
 
-  return { userProfile, setUserProfile, loading };
+  const refetchProfile = () => {
+    if (session?.user.id) {
+      fetchProfile(session.user.id);
+    }
+  };
+
+  return { userProfile, setUserProfile, loading, refetchProfile };
 }

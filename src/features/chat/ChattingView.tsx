@@ -1,8 +1,9 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import DailyIframe, { type DailyCall } from "@daily-co/daily-js";
 import { Socket } from "socket.io-client";
 import { useAuth } from "../../hooks/useAuth";
 import { useProfile } from "../../hooks/useProfile";
+import FeedbackModal from "../../components/feedback/FeedbackModal";
 import "./ChattingView.css";
 
 interface ChattingViewProps {
@@ -26,6 +27,7 @@ const ChattingView: React.FC<ChattingViewProps> = ({
   const socketRef = useRef(socket);
   const { session } = useAuth();
   const { userProfile } = useProfile(session);
+  const [showFeedback, setShowFeedback] = useState(false);
 
   useEffect(() => {
     onLeaveRef.current = onLeave;
@@ -79,7 +81,19 @@ const ChattingView: React.FC<ChattingViewProps> = ({
           callFrameRef.current?.leave();
           callFrameRef.current?.destroy();
           callFrameRef.current = null;
-          onLeaveRef.current();
+          
+          if (role === "venter") {
+            // Chiama queue:leave via socket senza smontare il componente
+            socketRef.current?.current?.emit("queue:leave");
+            
+            // Mostra feedback dopo delay per salvare sessione
+            setTimeout(() => {
+              setShowFeedback(true);
+            }, 1500);
+          } else {
+            // Listener esce normalmente
+            onLeaveRef.current();
+          }
         });
       } catch (err) {
         console.error(`❌ Errore Daily:`, err);
@@ -95,10 +109,36 @@ const ChattingView: React.FC<ChattingViewProps> = ({
     };
   }, [roomUrl, roomId, userProfile?.id, role]);
 
+  const handleFeedbackSubmit = (rating: number) => {
+    if (socketRef.current?.current && roomId) {
+      socketRef.current.current.emit("submit_feedback", {
+        roomId,
+        rating,
+      });
+      console.log(`⭐ Feedback inviato: ${rating} per room ${roomId}`);
+    }
+    setShowFeedback(false);
+    onLeaveRef.current();
+  };
+
+  const handleFeedbackClose = () => {
+    setShowFeedback(false);
+    onLeaveRef.current();
+  };
+
   return (
-    <div className="video-wrapper">
-      <div ref={videoContainerRef} className="video-container" />
-    </div>
+    <>
+      <div className="video-wrapper">
+        <div ref={videoContainerRef} className="video-container" />
+      </div>
+      
+      {showFeedback && (
+        <FeedbackModal
+          onSubmit={handleFeedbackSubmit}
+          onClose={handleFeedbackClose}
+        />
+      )}
+    </>
   );
 };
 

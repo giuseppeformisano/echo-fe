@@ -23,6 +23,7 @@ function App() {
     userProfile,
     setUserProfile,
     loading: profileLoading,
+    refetchProfile,
   } = useProfile(session);
   const { levels, loading: levelsLoading } = useLevels(isAuthenticated);
   const [currentView, setCurrentView] = useState<View>("dashboard");
@@ -72,6 +73,7 @@ function App() {
         onLeave={() => {
           leaveQueue();
           setStatus("idle");
+          refetchProfile();
         }}
       />
     );
