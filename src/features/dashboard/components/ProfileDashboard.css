@@ -181,6 +181,29 @@
   opacity: 1;
 }
 
+.pd-card:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.pd-card:disabled:hover {
+  transform: none;
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: none;
+}
+
+.pd-card:disabled::after {
+  opacity: 0;
+}
+
+.pd-card-warning {
+  color: #fbbf24;
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+  font-weight: 600;
+}
+
 .pd-emoji {
   font-size: 1.75rem;
   background: rgba(255, 255, 255, 0.06);

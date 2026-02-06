@@ -63,13 +63,21 @@ const ProfileDashboard: React.FC<ProfileDashboardProps> = ({
       </div>
 
       <div className="pd-cards">
-        <button className="pd-card" onClick={onSfogati}>
+        <button 
+          className="pd-card" 
+          onClick={onSfogati}
+          disabled={stats.credits === 0}
+          title={stats.credits === 0 ? "Crediti insufficienti" : ""}
+        >
           <div className="pd-emoji">🌿</div>
           <div className="pd-card-content">
             <h2 className="pd-card-title">Ho un peso</h2>
             <p className="pd-card-desc">
               Sfogati con un ascoltatore. Costa 1 credito.
             </p>
+            {stats.credits === 0 && (
+              <p className="pd-card-warning">⚠️ Crediti esauriti</p>
+            )}
           </div>
         </button>
 
