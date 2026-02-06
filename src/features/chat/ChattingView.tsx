@@ -111,7 +111,7 @@ const ChattingView: React.FC<ChattingViewProps> = ({
 
   const handleFeedbackSubmit = (rating: number) => {
     if (socketRef.current?.current && roomId) {
-      socketRef.current.current.emit("submit_feedback", {
+      socketRef.current.current.emit("call:submit_feedback", {
         roomId,
         rating,
       });

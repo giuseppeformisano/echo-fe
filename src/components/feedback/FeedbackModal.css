@@ -1,116 +1,143 @@
-.rating-container {
+/* --- Overlay e Container --- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75);
   display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  margin: 0;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+  animation: fadeIn 0.3s ease-out;
 }
 
-.rating-button {
-  background: rgba(255, 255, 255, 0.05);
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--radius-md);
-  padding: 1rem;
-  font-size: 1.5rem;
-  cursor: pointer;
-  transition: var(--transition-fast);
-  color: #ffd700;
+.modal-container {
+  background: #121212;
+  padding: 30px;
+  border-radius: 24px;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.rating-button:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: var(--accent-primary);
-  transform: translateY(-2px);
+.modal-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #ffffff;
 }
 
-.rating-button.selected {
-  background: rgba(16, 185, 129, 0.2);
-  border-color: var(--accent-primary);
-  box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+.modal-message {
+  color: #999;
+  font-size: 0.95rem;
+  margin-bottom: 24px;
 }
 
-.rating-container {
+/* --- Rating Holder --- */
+.rating-holder {
   display: flex;
-  flex-direction: column;
-  gap: 15px;
-  margin-bottom: 30px;
-}
-
-.rating-button {
-  background: rgba(255, 255, 255, 0.1);
-  border: 2px solid transparent;
-  border-radius: 12px;
+  justify-content: center;
   padding: 15px;
-  font-size: 24px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  color: #ffd700;
+  margin-bottom: 30px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 20px;
 }
 
-.rating-button:hover {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: #00d9ff;
-  transform: translateY(-2px);
-}
-
-.rating-button.selected {
-  background: rgba(0, 217, 255, 0.2);
-  border-color: #00d9ff;
-  box-shadow: 0 0 20px rgba(0, 217, 255, 0.3);
-}
-
-.feedback-actions {
+.c-rating {
   display: flex;
-  gap: 15px;
+  gap: 12px;
   justify-content: center;
 }
 
-.submit-button,
-.skip-button {
-  padding: 12px 30px;
-  border-radius: 10px;
-  border: none;
-  font-size: 16px;
-  font-weight: bold;
+.c-rating button {
   cursor: pointer;
-  transition: all 0.3s ease;
+  border: none;
+  background: none;
+  padding: 0;
+  width: 42px;
+  height: 42px;
+  text-indent: -9999px;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  
+  /* FLUIDITÀ: Transizione su sfondo, trasformazione e filtri */
+  transition: 
+    background-image 0.1s ease-in-out, 
+    transform 0.1s ease, 
+    filter 0.2s ease;
+  
+  /* Stella Default (Spenta) */
+  background: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22%23333%22%20d%3D%22M457.888%20210.672l-139.504-20.272-62.384-126.4-62.384%20126.4-139.504%2020.272%20100.944%2098.384-23.84%20138.928%20124.768-65.6%20124.768%2065.6-23.84-138.928z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E') center / contain no-repeat;
 }
 
-.submit-button {
-  background: linear-gradient(135deg, #00d9ff, #0099cc);
-  color: white;
+/* Effetto pressione tattile */
+.c-rating button:active {
+  transform: scale(0.9);
 }
 
-.submit-button:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 20px rgba(0, 217, 255, 0.4);
+/* --- LOGICA DINAMICA E FADE --- */
+
+/* Quando il mouse passa sopra (o la stella è selezionata) */
+/* Usiamo il data-attribute gestito da React per colorare le stelle */
+.c-rating[data-rating-value="1"] button:nth-child(-n+1),
+.c-rating[data-rating-value="2"] button:nth-child(-n+2),
+.c-rating[data-rating-value="3"] button:nth-child(-n+3),
+.c-rating[data-rating-value="4"] button:nth-child(-n+4),
+.c-rating[data-rating-value="5"] button:nth-child(-n+5) {
+  background-image: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22%23FFD700%22%20d%3D%22M457.888%20210.672l-139.504-20.272-62.384-126.4-62.384%20126.4-139.504%2020.272%20100.944%2098.384-23.84%20138.928%20124.768-65.6%20124.768%2065.6-23.84-138.928z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E');
+  filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.3)); /* Leggero alone dorato */
 }
 
-.submit-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+/* --- Azioni --- */
+.modal-actions {
+  display: flex;
+  gap: 12px;
 }
 
-.skip-button {
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
+.modal-actions button {
+  flex: 1;
+  padding: 12px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
-.skip-button:hover {
-  background: rgba(255, 255, 255, 0.15);
+/* --- Mobile --- */
+@media (max-width: 480px) {
+  .modal-container {
+    padding: 24px;
+    margin: 16px;
+  }
+  
+  .c-rating {
+    gap: 8px;
+  }
+
+  .c-rating button {
+    width: 38px;
+    height: 38px;
+  }
+
+  .modal-actions {
+    flex-direction: column-reverse;
+  }
 }
 
+/* --- Animazioni d'ingresso --- */
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 @keyframes slideUp {
   from {
-    transform: translateY(50px);
+    transform: translateY(40px);
     opacity: 0;
   }
   to {

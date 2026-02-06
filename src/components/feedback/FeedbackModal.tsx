@@ -9,6 +9,7 @@ interface FeedbackModalProps {
 
 const FeedbackModal: React.FC<FeedbackModalProps> = ({ onSubmit, onClose }) => {
   const [selectedRating, setSelectedRating] = useState<number | null>(null);
+  const [hoverRating, setHoverRating] = useState<number | null>(null);
 
   const handleSubmit = () => {
     if (selectedRating !== null) {
@@ -17,22 +18,30 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ onSubmit, onClose }) => {
     }
   };
 
+  const currentRating = hoverRating ?? selectedRating ?? 0;
+
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-container" onClick={(e) => e.stopPropagation()}>
         <h2 className="modal-title">Valuta l'ascoltatore</h2>
         <p className="modal-message">Come valuteresti l'esperienza?</p>
         
-        <div className="rating-container">
-          {[1, 2, 3, 4, 5].map((rating) => (
-            <button
-              key={rating}
-              className={`rating-button ${selectedRating === rating ? "selected" : ""}`}
-              onClick={() => setSelectedRating(rating)}
-            >
-              {"⭐".repeat(rating)}
-            </button>
-          ))}
+        <div className="rating-holder">
+          <div 
+            className="c-rating" 
+            data-rating-value={currentRating}
+            onMouseLeave={() => setHoverRating(null)}
+          >
+            {[1, 2, 3, 4, 5].map((rating) => (
+              <button
+                key={rating}
+                onClick={() => setSelectedRating(rating)}
+                onMouseEnter={() => setHoverRating(rating)}
+              >
+                {rating}
+              </button>
+            ))}
+          </div>
         </div>
 
         <div className="modal-actions">

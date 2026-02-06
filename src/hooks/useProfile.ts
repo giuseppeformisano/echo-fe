@@ -8,6 +8,8 @@ export interface UserProfile {
   credits: number;
   xp: number;
   rank: string;
+  rating_avg: number;
+  rating_count: number;
 }
 
 export function useProfile(session: Session | null) {

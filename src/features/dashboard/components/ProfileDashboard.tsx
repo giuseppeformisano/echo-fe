@@ -1,6 +1,8 @@
 import React from "react";
 import "./ProfileDashboard.css";
 import { getRankData, type Level } from "../../../utils/xpUtils";
+import { useProfile } from "../../../hooks/useProfile";
+import { useAuth } from "../../../hooks/useAuth";
 
 interface Stats {
   credits: number;
@@ -23,8 +25,12 @@ const ProfileDashboard: React.FC<ProfileDashboardProps> = ({
   onSfogati,
   onAscolta,
 }) => {
-  const rankData = getRankData(stats.xp, levels);
+  const { session } = useAuth();
+  const {
+    userProfile
+  } = useProfile(session);
 
+  const rankData = getRankData(userProfile?.xp || 0, levels);
   return (
     <div className="pd-container">
       <div className="pd-header">
@@ -54,6 +60,18 @@ const ProfileDashboard: React.FC<ProfileDashboardProps> = ({
               <span className="pd-stat-value">{stats.credits}</span>
             </div>
           </div>
+          <div className="pd-stat-item pd-feedback">
+            <span className="pd-stat-icon">⭐</span>
+            <div className="pd-stat-info">
+              <span className="pd-label">Feedback</span>
+              <span className="pd-stat-value">
+                {(userProfile?.rating_avg || 0) > 0 ? userProfile!.rating_avg.toFixed(1) : '—'}/5
+              </span>
+              <span className="pd-stat-reviews">
+                {userProfile?.rating_count || 0} {userProfile?.rating_count === 1 ? 'recensione' : 'recensioni'}
+              </span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -63,8 +81,8 @@ const ProfileDashboard: React.FC<ProfileDashboardProps> = ({
       </div>
 
       <div className="pd-cards">
-        <button 
-          className="pd-card" 
+        <button
+          className="pd-card"
           onClick={onSfogati}
           disabled={stats.credits === 0}
           title={stats.credits === 0 ? "Crediti insufficienti" : ""}
