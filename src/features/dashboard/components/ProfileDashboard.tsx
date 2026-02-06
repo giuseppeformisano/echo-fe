@@ -31,6 +31,26 @@ const ProfileDashboard: React.FC<ProfileDashboardProps> = ({
   } = useProfile(session);
 
   const rankData = getRankData(userProfile?.xp || 0, levels);
+  
+  const getFeedbackClass = (rating: number) => {
+  if (rating === 0) return 'rating-none';
+  if (rating < 2.5) return 'rating-low';      // 1.0 - 2.4
+  if (rating < 3.5) return 'rating-fair';     // 2.5 - 3.4
+  if (rating < 4.2) return 'rating-good';     // 3.5 - 4.1
+  if (rating < 4.8) return 'rating-great';    // 4.2 - 4.7
+  return 'rating-excellent';                  // 4.8 - 5.0
+};
+
+const getFeedbackIcon = (rating: number) => {
+  if (rating === 0) return '🌱';   // Appena nato (nessun feedback)
+  if (rating < 2.5) return '☁️';    // Nebbia (bisogna migliorare l'ascolto)
+  if (rating < 3.5) return '🍵';    // Accogliente (ascolto base)
+  if (rating < 4.2) return '🌿';    // In crescita (buon ascoltatore)
+  if (rating < 4.8) return '✨';    // Brillante (ottimo impatto)
+  return '💎';                      // Prezioso (ascoltatore d'eccellenza)
+};
+
+  const currentRating = userProfile?.rating_avg || 0;
   return (
     <div className="pd-container">
       <div className="pd-header">
@@ -60,12 +80,12 @@ const ProfileDashboard: React.FC<ProfileDashboardProps> = ({
               <span className="pd-stat-value">{stats.credits}</span>
             </div>
           </div>
-          <div className="pd-stat-item pd-feedback">
-            <span className="pd-stat-icon">⭐</span>
+          <div className={`pd-stat-item pd-feedback ${getFeedbackClass(currentRating)}`}>
+            <span className="pd-stat-icon">{getFeedbackIcon(currentRating)}</span>
             <div className="pd-stat-info">
               <span className="pd-label">Feedback</span>
               <span className="pd-stat-value">
-                {(userProfile?.rating_avg || 0) > 0 ? userProfile!.rating_avg.toFixed(1) : '—'}/5
+                {currentRating > 0 ? currentRating.toFixed(1) : '—'}/5
               </span>
               <span className="pd-stat-reviews">
                 {userProfile?.rating_count || 0} {userProfile?.rating_count === 1 ? 'recensione' : 'recensioni'}

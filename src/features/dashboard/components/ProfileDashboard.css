@@ -1,11 +1,14 @@
+/* --- Container Principale --- */
 .pd-container {
   width: 100%;
   max-width: 700px;
   display: flex;
   flex-direction: column;
   gap: 2.5rem;
+  margin: 0 auto;
 }
 
+/* --- Header e Stats --- */
 .pd-header {
   width: 100%;
   display: flex;
@@ -23,326 +26,228 @@
   display: flex;
   align-items: center;
   gap: 0.625rem;
-  padding: 0.875rem 1.5rem;
-  border-radius: var(--radius-full);
+  padding: 0.875rem 1.25rem;
+  border-radius: 20px;
   background: rgba(255, 255, 255, 0.04);
   backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   animation: slideUpFade 0.6s ease-out backwards;
+  flex: 1;
+}
+
+.pd-stat-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0; /* Evita overflow del testo */
 }
 
 .pd-label {
   font-size: 0.65rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--text-secondary);
+  color: rgba(255, 255, 255, 0.5);
   font-weight: 700;
-  display: block;
   line-height: 1;
-  margin-bottom: 2px;
-}
-
-.pd-stat-info {
-  display: flex;
-  flex-direction: column;
+  margin-bottom: 4px;
 }
 
 .pd-stat-value {
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: #ffffff;
   line-height: 1;
+}
+
+.pd-stat-icon {
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
 }
 
 .pd-stat-reviews {
   font-size: 0.6rem;
-  color: var(--text-secondary);
-  margin-top: 2px;
+  color: rgba(255, 255, 255, 0.4);
+  margin-top: 4px;
+  white-space: nowrap;
 }
 
-.pd-feedback .pd-stat-icon {
-  filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.5));
-  color: #ffd700;
+/* --- LOGICA FEEDBACK (6 LIVELLI) --- */
+
+/* 🌱 None (0) */
+.pd-feedback.rating-none .pd-stat-icon { filter: grayscale(1); opacity: 0.5; }
+
+/* ☁️ Low (0.1 - 2.4) */
+.pd-feedback.rating-low {
+  border-color: rgba(156, 163, 175, 0.2) !important;
+  background: rgba(156, 163, 175, 0.05) !important;
+}
+.pd-feedback.rating-low .pd-stat-icon { filter: drop-shadow(0 0 5px rgba(156, 163, 175, 0.4)); }
+
+/* 🍵 Fair (2.5 - 3.4) */
+.pd-feedback.rating-fair {
+  border-color: rgba(217, 119, 6, 0.2) !important;
+  background: rgba(217, 119, 6, 0.05) !important;
+}
+.pd-feedback.rating-fair .pd-stat-icon { filter: drop-shadow(0 0 5px rgba(217, 119, 6, 0.4)); }
+
+/* 🌿 Good (3.5 - 4.1) */
+.pd-feedback.rating-good {
+  border-color: rgba(52, 211, 153, 0.2) !important;
+  background: rgba(52, 211, 153, 0.05) !important;
+}
+.pd-feedback.rating-good .pd-stat-icon { filter: drop-shadow(0 0 5px rgba(52, 211, 153, 0.4)); }
+
+/* ✨ Great (4.2 - 4.7) */
+.pd-feedback.rating-great {
+  border-color: rgba(96, 165, 250, 0.3) !important;
+  background: rgba(96, 165, 250, 0.08) !important;
+}
+.pd-feedback.rating-great .pd-stat-icon { 
+  filter: drop-shadow(0 0 8px rgba(96, 165, 250, 0.6)); 
+  animation: pulse 2s infinite;
 }
 
+/* 💎 Excellent (4.8 - 5.0) */
+.pd-feedback.rating-excellent {
+  border-color: rgba(255, 215, 0, 0.4) !important;
+  background: rgba(255, 215, 0, 0.1) !important;
+}
+.pd-feedback.rating-excellent .pd-stat-icon {
+  filter: drop-shadow(0 0 12px rgba(255, 215, 0, 0.8));
+  animation: floatEmoji 3s ease-in-out infinite;
+}
+.pd-feedback.rating-excellent .pd-stat-value { color: #ffd700; }
+
+/* --- XP Progress Bar --- */
 .pd-xp-progress {
   width: 100%;
-  min-width: 70px;
-  height: 3px;
+  min-width: 60px;
+  height: 4px;
   background: rgba(255, 255, 255, 0.1);
-  border-radius: var(--radius-full);
-  margin-top: 5px;
+  border-radius: 10px;
+  margin-top: 6px;
   overflow: hidden;
 }
 
 .pd-xp-fill {
   height: 100%;
-  background: var(--accent-primary);
-  box-shadow: 0 0 12px rgba(16, 185, 129, 0.5);
-  border-radius: var(--radius-full);
-  transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+  background: #10b981;
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
+  transition: width 1s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.rank-novizio .pd-stat-icon {
-  filter: drop-shadow(0 0 5px rgba(59, 130, 246, 0.5));
-  color: #3b82f6;
-}
-
-.rank-sostenitore .pd-stat-icon,
-.rank-apprendista .pd-stat-icon,
-.rank-esploratore .pd-stat-icon {
-  filter: drop-shadow(0 0 5px var(--accent-primary));
-}
-
-.rank-guida .pd-stat-icon,
-.rank-custode .pd-stat-icon,
-.rank-saggio .pd-stat-icon,
-.rank-maestro .pd-stat-icon,
-.rank-illuminato .pd-stat-icon,
-.rank-trascendente .pd-stat-icon {
-  filter: drop-shadow(0 0 8px #f59e0b);
-}
-
-.rank-saggio,
-.rank-maestro,
-.rank-illuminato,
-.rank-trascendente {
-  border-color: rgba(245, 158, 11, 0.3) !important;
-  background: rgba(245, 158, 11, 0.05) !important;
-}
-
-.rank-saggio .pd-stat-value,
-.rank-maestro .pd-stat-value,
-.rank-illuminato .pd-stat-value,
-.rank-trascendente .pd-stat-value {
-  color: #fbbf24;
-}
-
-.pd-welcome {
-  text-align: left;
-}
-
+/* --- Welcome Section --- */
 .pd-title {
-  font-size: 2.75rem;
+  font-size: 2.5rem;
   font-weight: 800;
-  margin-bottom: 0.625rem;
-  background: linear-gradient(135deg, #fff 30%, #71717a 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  overflow-wrap: break-word;
-  animation: slideUpFade 0.35s ease-out 0.15s backwards;
+  margin-bottom: 0.5rem;
+  color: #ffffff;
+  animation: slideUpFade 0.4s ease-out 0.1s backwards;
 }
 
 .pd-sub {
-  color: var(--text-secondary);
-  font-size: 1.05rem;
-  max-width: 480px;
-  line-height: 1.5;
-  animation: slideUpFade 0.35s ease-out 0.2s backwards;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1rem;
+  animation: slideUpFade 0.4s ease-out 0.2s backwards;
 }
 
+/* --- Action Cards --- */
 .pd-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: 1fr 1fr;
   gap: 1.25rem;
 }
 
 .pd-card {
-  position: relative;
   background: rgba(30, 41, 59, 0.4);
-  backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.08);
   padding: 2rem;
-  border-radius: var(--radius-xl);
+  border-radius: 24px;
   cursor: pointer;
-  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.3s ease;
   text-align: left;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.5rem;
+  position: relative;
   overflow: hidden;
-  animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s backwards;
+  animation: slideUpFade 0.6s ease-out 0.3s backwards;
 }
 
-.pd-card::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    circle at top left,
-    rgba(16, 185, 129, 0.15),
-    transparent 70%
-  );
-  opacity: 0;
-  transition: opacity 0.4s ease;
-}
-
-.pd-card:hover {
+.pd-card:hover:not(:disabled) {
+  transform: translateY(-5px);
   border-color: rgba(16, 185, 129, 0.4);
-  transform: translateY(-4px) scale(1.01);
-  box-shadow:
-    0 24px 48px rgba(0, 0, 0, 0.4),
-    0 0 60px rgba(16, 185, 129, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
-}
-
-.pd-card:hover::after {
-  opacity: 1;
-}
-
-.pd-card:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none;
-}
-
-.pd-card:disabled:hover {
-  transform: none;
-  border-color: rgba(255, 255, 255, 0.08);
-  box-shadow: none;
-}
-
-.pd-card:disabled::after {
-  opacity: 0;
-}
-
-.pd-card-warning {
-  color: #fbbf24;
-  font-size: 0.85rem;
-  margin-top: 0.25rem;
-  font-weight: 600;
+  background: rgba(30, 41, 59, 0.6);
 }
 
 .pd-emoji {
-  font-size: 1.75rem;
-  background: rgba(255, 255, 255, 0.06);
-  width: 60px;
-  height: 60px;
+  font-size: 2rem;
+  background: rgba(255, 255, 255, 0.05);
+  width: 56px;
+  height: 56px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 18px;
-  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-  z-index: 1;
+  border-radius: 16px;
 }
 
 .pd-card:hover .pd-emoji {
-  transform: rotate(-8deg) scale(1.15);
-  background: rgba(16, 185, 129, 0.15);
-  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
+  transform: scale(1.1) rotate(-5deg);
 }
 
-.pd-card-title {
-  font-size: 1.1rem;
-  font-weight: 700;
-}
+.pd-card-title { font-size: 1.2rem; font-weight: 700; color: #fff; }
+.pd-card-desc { font-size: 0.9rem; color: rgba(255, 255, 255, 0.5); line-height: 1.4; }
 
-.pd-card-desc {
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-  line-height: 1.5;
-}
-
-.pd-energy {
-  filter: drop-shadow(0 0 8px rgba(250, 204, 21, 0.4));
-}
-
-.pd-card-content {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  z-index: 1;
-}
-
+/* --- Mobile Optimization --- */
 @media (max-width: 768px) {
-  .pd-container {
-    gap: 2rem;
-  }
-
-  .pd-title {
-    font-size: 2rem;
-  }
-
-  .pd-sub {
-    font-size: 1rem;
-  }
-
   .pd-stats {
-    flex-wrap: wrap;
-    gap: 0.625rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
   }
 
-  .pd-stat-item {
-    padding: 0.625rem 0.875rem;
-    gap: 0.5rem;
-    flex: 1 1 auto;
-    min-width: 0;
+  .pd-stat-item:last-child {
+    grid-column: span 2;
   }
 
-  .pd-label {
-    font-size: 0.6rem;
-  }
-
-  .pd-stat-value {
-    font-size: 0.8rem;
-  }
-
-  .pd-stat-reviews {
-    font-size: 0.55rem;
-  }
-
+  .pd-title { font-size: 2rem; }
+  
   .pd-cards {
     grid-template-columns: 1fr;
-    gap: 1rem;
   }
 
   .pd-card {
-    padding: 1rem 1.25rem;
+    padding: 1.5rem;
     flex-direction: row;
     align-items: center;
-    gap: 1rem;
-    border-radius: var(--radius-lg);
   }
 
-  .pd-emoji {
-    width: 44px;
-    height: 44px;
-    font-size: 1.25rem;
-    border-radius: 12px;
-    flex-shrink: 0;
-  }
-
-  .pd-card-content {
-    gap: 0.15rem;
-  }
-
-  .pd-card-title {
-    font-size: 1.05rem;
-  }
-
-  .pd-card-desc {
-    font-size: 0.8rem;
-    line-height: 1.3;
-  }
+  .pd-emoji { width: 48px; height: 48px; font-size: 1.5rem; flex-shrink: 0; }
 }
 
 @media (max-width: 480px) {
-  .pd-title {
-    font-size: 1.8rem;
-  }
+  .pd-stat-item { padding: 0.75rem; }
+  .pd-stat-value { font-size: 0.9rem; }
+  .pd-stat-icon { font-size: 1.2rem; }
+}
 
-  .pd-stats {
-    gap: 0.7rem;
-  }
+/* --- Animations --- */
+@keyframes slideUpFade {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
-  .pd-stat-item {
-    padding: 0.8rem 0.75rem;
-    flex: 1 1 calc(50% - 0.5rem);
-  }
+@keyframes floatEmoji {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
 
-  .pd-stat-item:nth-child(3) {
-    flex: 1 1 100%;
-  }
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.8; }
+  100% { transform: scale(1); opacity: 1; }
 }
