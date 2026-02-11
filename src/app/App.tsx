@@ -12,8 +12,6 @@ import { supabase } from "../supabaseClient";
 import { useAuth } from "../hooks/useAuth";
 import { useProfile } from "../hooks/useProfile";
 import { useLevels } from "../hooks/useLevels";
-import FeedbackModal from "../components/feedback/FeedbackModal";
-import ConfirmationModal from "../components/ui/ConfirmationModal";
 
 const SOCKET_URL = import.meta.env.VITE_BACKEND_URL;
 
