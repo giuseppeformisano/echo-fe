@@ -15,7 +15,7 @@ export interface UserProfile {
 export function useProfile(session: Session | null) {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
-  const fetchedRef = useRef(false);
+  const fetchedRef = useRef<string | null>(null);
 
   const fetchProfile = async (userId: string) => {
     setLoading(true);
@@ -32,9 +32,18 @@ export function useProfile(session: Session | null) {
   };
 
   useEffect(() => {
-    if (session?.user.id && !fetchedRef.current) {
-      fetchProfile(session.user.id);
-      fetchedRef.current = true;
+    const userId = session?.user.id ?? null;
+
+    if (!userId) {
+      setUserProfile(null);
+      setLoading(false);
+      fetchedRef.current = null;
+      return;
+    }
+
+    if (fetchedRef.current !== userId) {
+      fetchProfile(userId);
+      fetchedRef.current = userId;
     }
   }, [session?.user.id]);
 
