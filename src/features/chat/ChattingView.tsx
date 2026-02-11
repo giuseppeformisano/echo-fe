@@ -109,13 +109,25 @@ const ChattingView: React.FC<ChattingViewProps> = ({
     };
   }, [roomUrl, roomId, userProfile?.id, role]);
 
-  const handleFeedbackSubmit = (rating: number) => {
+  const handleFeedbackSubmit = (payload: {
+    empathy: number;
+    presence: number;
+    non_judgment: number;
+    usefulness: number;
+    comment?: string | null;
+  }) => {
     if (socketRef.current?.current && roomId) {
       socketRef.current.current.emit("call:submit_feedback", {
         roomId,
-        rating,
+        ...payload,
       });
-      console.log(`⭐ Feedback inviato: ${rating} per room ${roomId}`);
+      const avg = (
+        payload.empathy +
+        payload.presence +
+        payload.non_judgment +
+        payload.usefulness
+      ) / 4.0;
+      console.log(`⭐ Feedback inviato: avg=${avg.toFixed(2)} for room ${roomId}`);
     }
     setShowFeedback(false);
     onLeaveRef.current();

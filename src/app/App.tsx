@@ -12,6 +12,8 @@ import { supabase } from "../supabaseClient";
 import { useAuth } from "../hooks/useAuth";
 import { useProfile } from "../hooks/useProfile";
 import { useLevels } from "../hooks/useLevels";
+import FeedbackModal from "../components/feedback/FeedbackModal";
+import ConfirmationModal from "../components/ui/ConfirmationModal";
 
 const SOCKET_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -35,6 +37,23 @@ function App() {
     supabase.auth.signOut();
     setCurrentView("dashboard");
   };
+
+  // return <ConfirmationModal
+  //   isOpen={true}
+  //   title="Elimina Account"
+  //   message="Sei sicuro di voler eliminare il tuo account? Questa azione è irreversibile e tutti i tuoi dati (crediti, XP, profilo) verranno persi definitivamente."
+  //   confirmText="Elimina definitivamente"
+  //   variant="danger" onConfirm={function (): void {
+  //     throw new Error("Function not implemented.");
+  //   } } onCancel={function (): void {
+  //     throw new Error("Function not implemented.");
+  //   } }      />
+
+  // return <FeedbackModal onSubmit={function (): void {
+  //   throw new Error("Function not implemented.");
+  // } } onClose={function (): void {
+  //   throw new Error("Function not implemented.");
+  // } } />;
 
   if (authLoading || (isAuthenticated && (profileLoading || levelsLoading))) {
     return <LoadingScreen />;

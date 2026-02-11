@@ -1,147 +1,256 @@
 /* --- Overlay e Container --- */
-.modal-overlay {
+.fb-modal-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.75);
+  inset: 0;
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  padding: 20px;
-  animation: fadeIn 0.3s ease-out;
+  background: linear-gradient(
+    135deg,
+    rgba(16, 185, 129, 0.05) 0%,
+    rgba(59, 130, 246, 0.05) 100%
+  );
+  backdrop-filter: blur(12px);
+  animation: fadeIn 0.5s ease-out forwards;
 }
 
-.modal-container {
-  background: #121212;
-  padding: 30px;
-  border-radius: 24px;
-  max-width: 400px;
-  width: 100%;
+.fb-modal-container {
+  background: rgba(30, 41, 59, 0.6);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-xl);
+  padding: 2rem;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
+  animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Header section */
+.fb-modal-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
   text-align: center;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-  animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.modal-title {
-  font-size: 1.4rem;
-  font-weight: 600;
-  margin-bottom: 8px;
-  color: #ffffff;
+.fb-modal-message {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  text-align: center;
 }
 
-.modal-message {
-  color: #999;
+/* --- Rating Section --- */
+.fb-rating-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  text-align: center;
+  margin: 0.5rem 0;
+}
+
+.fb-rating-label {
   font-size: 0.95rem;
-  margin-bottom: 24px;
+  font-weight: 600;
+  color: var(--text-primary);
 }
 
-/* --- Rating Holder --- */
-.rating-holder {
+.fb-c-rating {
   display: flex;
+  gap: 0.5rem;
   justify-content: center;
-  padding: 15px;
-  margin-bottom: 30px;
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 20px;
+  flex-wrap: wrap;
 }
 
-.c-rating {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-}
-
-.c-rating button {
+.fb-c-rating button {
   cursor: pointer;
   border: none;
   background: none;
-  padding: 0;
-  width: 42px;
-  height: 42px;
+  padding: 0.15rem;
+  width: 2.15rem;
+  height: 2.15rem;
   text-indent: -9999px;
   outline: none;
   -webkit-tap-highlight-color: transparent;
-  
-  /* FLUIDITÀ: Transizione su sfondo, trasformazione e filtri */
-  transition: 
-    background-image 0.1s ease-in-out, 
-    transform 0.1s ease, 
-    filter 0.2s ease;
-  
-  /* Stella Default (Spenta) */
-  background: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22%23333%22%20d%3D%22M457.888%20210.672l-139.504-20.272-62.384-126.4-62.384%20126.4-139.504%2020.272%20100.944%2098.384-23.84%20138.928%20124.768-65.6%20124.768%2065.6-23.84-138.928z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E') center / contain no-repeat;
+  border-radius: var(--radius-sm);
+  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  background: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22%2364748b%22%20d%3D%22M457.888%20210.672l-139.504-20.272-62.384-126.4-62.384%20126.4-139.504%2020.272%20100.944%2098.384-23.84%20138.928%20124.768-65.6%20124.768%2065.6-23.84-138.928z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E') center / 72% no-repeat;
+}
+
+/* Hover effect */
+.fb-c-rating button:hover {
+  transform: scale(1.15);
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.15));
 }
 
 /* Effetto pressione tattile */
-.c-rating button:active {
-  transform: scale(0.9);
+.fb-c-rating button:active {
+  transform: scale(0.95);
 }
 
-/* --- LOGICA DINAMICA E FADE --- */
+/* --- LOGICA DINAMICA --- */
+.fb-c-rating[data-rating-value="1"] button:nth-child(-n+1),
+.fb-c-rating[data-rating-value="2"] button:nth-child(-n+2),
+.fb-c-rating[data-rating-value="3"] button:nth-child(-n+3),
+.fb-c-rating[data-rating-value="4"] button:nth-child(-n+4),
+.fb-c-rating[data-rating-value="5"] button:nth-child(-n+5) {
+  background-image: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22%2310b981%22%20d%3D%22M457.888%20210.672l-139.504-20.272-62.384-126.4-62.384%20126.4-139.504%2020.272%20100.944%2098.384-23.84%20138.928%20124.768-65.6%20124.768%2065.6-23.84-138.928z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E');
+  background-color: rgba(16, 185, 129, 0.1);
+  filter: drop-shadow(0 0 6px rgba(16, 185, 129, 0.5));
+  background-size: 70%;
+}
 
-/* Quando il mouse passa sopra (o la stella è selezionata) */
-/* Usiamo il data-attribute gestito da React per colorare le stelle */
-.c-rating[data-rating-value="1"] button:nth-child(-n+1),
-.c-rating[data-rating-value="2"] button:nth-child(-n+2),
-.c-rating[data-rating-value="3"] button:nth-child(-n+3),
-.c-rating[data-rating-value="4"] button:nth-child(-n+4),
-.c-rating[data-rating-value="5"] button:nth-child(-n+5) {
-  background-image: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20512%20512%22%3E%3Cpath%20fill%3D%22%23FFD700%22%20d%3D%22M457.888%20210.672l-139.504-20.272-62.384-126.4-62.384%20126.4-139.504%2020.272%20100.944%2098.384-23.84%20138.928%20124.768-65.6%20124.768%2065.6-23.84-138.928z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E');
-  filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.3)); /* Leggero alone dorato */
+/* --- Comment Block --- */
+.fb-comment-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  text-align: center;
+  margin: 0.5rem 0;
+}
+
+.fb-comment-block label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.fb-comment-block textarea {
+  padding: 0.75rem;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  resize: vertical;
+  min-height: 4rem;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.fb-comment-block textarea::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.7;
+}
+
+.fb-comment-block textarea:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(16, 185, 129, 0.4);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1), 0 0 16px rgba(16, 185, 129, 0.15);
 }
 
 /* --- Azioni --- */
-.modal-actions {
+.fb-modal-actions {
   display: flex;
-  gap: 12px;
+  gap: 1rem;
+  justify-content: center;
 }
 
-.modal-actions button {
-  flex: 1;
-  padding: 12px;
-  border-radius: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
+/* --- Tablet --- */
+@media (max-width: 768px) {
+  .fb-modal-container {
+    padding: 1.75rem;
+    width: 95%;
+  }
+
+  .fb-modal-title {
+    font-size: 1.35rem;
+  }
+
+  .fb-modal-message {
+    font-size: 0.95rem;
+  }
+
+  .fb-c-rating button {
+    width: 2.2rem;
+    height: 2.2rem;
+  }
 }
 
 /* --- Mobile --- */
 @media (max-width: 480px) {
-  .modal-container {
-    padding: 24px;
-    margin: 16px;
+  .fb-modal-overlay {
+    align-items: flex-end;
+  }
+
+  .fb-modal-container {
+    border-radius: 1.5rem 1.5rem 0 0;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 1.5rem 1.25rem calc(1.5rem + env(safe-area-inset-bottom, 12px));
+    animation: slideUpBottom 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   }
   
-  .c-rating {
-    gap: 8px;
+  .fb-modal-title {
+    font-size: 1.25rem;
   }
 
-  .c-rating button {
-    width: 38px;
-    height: 38px;
+  .fb-modal-message {
+    font-size: 0.9rem;
   }
 
-  .modal-actions {
+  .fb-rating-label {
+    font-size: 0.9rem;
+  }
+
+  .fb-c-rating button {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .fb-comment-block textarea {
+    font-size: 0.9rem;
+  }
+
+  .fb-modal-actions {
     flex-direction: column-reverse;
+    gap: 0.75rem;
+  }
+
+  .fb-modal-actions button {
+    width: 100%;
+    min-height: 44px;
   }
 }
 
-/* --- Animazioni d'ingresso --- */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+/* --- Animazione specifica per Bottom Sheet --- */
+@keyframes slideUpBottom {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-@keyframes slideUp {
+/* --- Animazioni d'ingresso (da index.css) --- */
+@keyframes slideUpFade {
   from {
-    transform: translateY(40px);
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
     opacity: 0;
   }
   to {
-    transform: translateY(0);
     opacity: 1;
   }
 }

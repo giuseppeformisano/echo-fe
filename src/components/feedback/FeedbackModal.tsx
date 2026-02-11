@@ -2,57 +2,87 @@ import React, { useState } from "react";
 import Button from "../ui/Button";
 import "./FeedbackModal.css";
 
+interface FeedbackPayload {
+  empathy: number;
+  presence: number;
+  non_judgment: number;
+  usefulness: number;
+  comment?: string | null;
+}
+
 interface FeedbackModalProps {
-  onSubmit: (rating: number) => void;
+  onSubmit: (payload: FeedbackPayload) => void;
   onClose: () => void;
 }
 
+const RatingRow: React.FC<{
+  label: string;
+  value: number | null;
+  onChange: (v: number) => void;
+}> = ({ label, value, onChange }) => {
+  return (
+    <div className="fb-rating-row">
+      <div className="fb-rating-label">{label}</div>
+      <div className="fb-c-rating" data-rating-value={value ?? 0}>
+        {[1, 2, 3, 4, 5].map((r) => (
+          <button key={r} onClick={() => onChange(r)}>
+            {r}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 const FeedbackModal: React.FC<FeedbackModalProps> = ({ onSubmit, onClose }) => {
-  const [selectedRating, setSelectedRating] = useState<number | null>(null);
-  const [hoverRating, setHoverRating] = useState<number | null>(null);
+  const [empathy, setEmpathy] = useState<number | null>(null);
+  const [presence, setPresence] = useState<number | null>(null);
+  const [nonJudgment, setNonJudgment] = useState<number | null>(null);
+  const [usefulness, setUsefulness] = useState<number | null>(null);
+  const [comment, setComment] = useState<string>("");
+
+  const allSet =
+    empathy !== null &&
+    presence !== null &&
+    nonJudgment !== null &&
+    usefulness !== null;
 
   const handleSubmit = () => {
-    if (selectedRating !== null) {
-      onSubmit(selectedRating);
-      onClose();
-    }
+    if (!allSet) return;
+    onSubmit({
+      empathy: empathy as number,
+      presence: presence as number,
+      non_judgment: nonJudgment as number,
+      usefulness: usefulness as number,
+      comment: comment?.trim() || null,
+    } as any);
+    onClose();
   };
 
-  const currentRating = hoverRating ?? selectedRating ?? 0;
-
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-container" onClick={(e) => e.stopPropagation()}>
-        <h2 className="modal-title">Valuta l'ascoltatore</h2>
-        <p className="modal-message">Come valuteresti l'esperienza?</p>
-        
-        <div className="rating-holder">
-          <div 
-            className="c-rating" 
-            data-rating-value={currentRating}
-            onMouseLeave={() => setHoverRating(null)}
-          >
-            {[1, 2, 3, 4, 5].map((rating) => (
-              <button
-                key={rating}
-                onClick={() => setSelectedRating(rating)}
-                onMouseEnter={() => setHoverRating(rating)}
-              >
-                {rating}
-              </button>
-            ))}
-          </div>
+    <div className="fb-modal-overlay" onClick={onClose}>
+      <div className="fb-modal-container" onClick={(e) => e.stopPropagation()}>
+        <h2 className="fb-modal-title">Valuta l'ascoltatore</h2>
+
+        <RatingRow label="Empatia" value={empathy} onChange={setEmpathy} />
+        <RatingRow label="Presenza / Attenzione" value={presence} onChange={setPresence} />
+        <RatingRow label="Spazio sicuro / Non-giudizio" value={nonJudgment} onChange={setNonJudgment} />
+        <RatingRow label="Utilità percepita" value={usefulness} onChange={setUsefulness} />
+
+        <div className="fb-comment-block">
+          <label>Commento (opzionale)</label>
+          <textarea
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            placeholder="Vuoi aggiungere qualcosa?"
+          />
         </div>
 
-        <div className="modal-actions">
+        <div className="fb-modal-actions">
           <Button variant="secondary" onClick={onClose}>
             Salta
           </Button>
-          <Button
-            variant="primary"
-            onClick={handleSubmit}
-            disabled={selectedRating === null}
-          >
+          <Button variant="primary" onClick={handleSubmit} disabled={!allSet}>
             Invia
           </Button>
         </div>
